@@ -1,6 +1,7 @@
-import { Outlet } from "react-router-dom";
-import { Footer } from "~widgets/footer";
-import { Header } from "~widgets/header";
+import { Outlet } from 'react-router-dom';
+import { Footer } from '~widgets/footer';
+import { Header } from '~widgets/header';
+import { Navigator } from '~widgets/navigator';
 
 export function GenericLayout() {
   return (
@@ -9,6 +10,7 @@ export function GenericLayout() {
       <main className="flex-grow max-w-[1200px] mx-auto">
         <Outlet />
       </main>
+      <Navigator />
       <Footer />
     </div>
   );
