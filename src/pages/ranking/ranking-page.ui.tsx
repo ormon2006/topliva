@@ -16,6 +16,7 @@ import {
 import { EmojiEvents } from '@mui/icons-material';
 import { Title } from '~shared/ui/title';
 import { Link } from 'react-router-dom';
+
 export function RankingPage() {
   const [activeTab, setActiveTab] = useState(0);
 
@@ -115,11 +116,11 @@ export function RankingPage() {
           <Tab label="По студентам" />
         </Tabs>
       </Box>
-      <Box sx={{ p: 3 }}>
+      <Box sx={{ p: 3 }} >
         {activeTab === 0 && (
           <TableContainer
             component={Paper}
-            className="w-[400px] shadow-none border border-alto"
+            className="shadow-none border border-alto  md:overflow-x-hidden md:max-w-full overflow-x-auto max-w-[350px]"
           >
             <Table>
               <TableHead>
@@ -139,7 +140,7 @@ export function RankingPage() {
                       <div className="backdrop-blur-xl bg-white/30 rounded-full p-1 flex items-center justify-center">
                         {group.rank <= 3 ? (
                           <img
-                            src={`/public/trophy_${group.rank}.svg`}
+                            src={`/trophy_${group.rank}.svg`}
                             className="w-10 h-10"
                             alt=""
                           />
@@ -161,7 +162,7 @@ export function RankingPage() {
         {activeTab === 1 && (
           <TableContainer
             component={Paper}
-            className="shadow-none border border-alto"
+            className="shadow-none border border-alto md:overflow-x-hidden md:max-w-full overflow-x-auto max-w-[350px] "
           >
             <Table>
               <TableHead>
@@ -178,7 +179,7 @@ export function RankingPage() {
                       {student.rank <= 3 ? (
                         <div className="relative">
                           <img
-                            src={`/public/medal_${student.rank}.svg`}
+                            src={`/medal_${student.rank}.svg`}
                             alt={`Медаль за ${student.rank} место`}
                             className="w-15 h-15 max-w-15 min-w-15 max-h-15 min-h-15"
                           />

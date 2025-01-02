@@ -52,7 +52,7 @@ export function Navigator() {
           label="Рейтинг"
           icon={<BarChartRoundedIcon />}
         />
-        
+
         <BottomNavigationAction label="Профиль" icon={<AccountCircleIcon />} />
       </BottomNavigation>
     </Paper>
