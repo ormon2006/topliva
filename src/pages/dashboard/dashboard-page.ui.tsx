@@ -1,92 +1,97 @@
-import { Avatar, Typography, Paper, Chip } from '@mui/material';
-import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
-import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
-import GroupIcon from '@mui/icons-material/Group';
+import {
+  Avatar,
+  Typography,
+  Paper,
+  LinearProgress,
+  List,
+  ListItem,
+  ListItemText,
+} from '@mui/material';
+import { Chart } from '~widgets/chart';
+
+const userData = {
+  first_name: 'Максат',
+  points: 1200,
+  level: 5,
+  progress: 70,
+  group_id: 'ПОВТ-1-20',
+  achievements: [
+    { id: 1, title: 'Мастер домашек', image: '/bade_1.svg' },
+    { id: 3, title: 'Командный игрок', image: '/team.svg' },
+    { id: 5, title: 'Наставник', image: '/mentor.svg' },
+  ],
+  weekly_leaders: [
+    { name: 'Айдар', points: 1500 },
+    { name: 'Камила', points: 1400 },
+    { name: 'Максат', points: 1200 },
+  ],
+  quests: [
+    { id: 1, title: 'Завершите 3 задания', completed: false },
+    { id: 2, title: 'Получите 2 новых достижения', completed: false },
+  ],
+  goals: [
+    { id: 1, title: 'Завершить 10 домашних заданий', progress: 60 },
+    { id: 2, title: 'Достигнуть 6 уровня', progress: 50 },
+  ],
+};
 
 export function DashboardPage() {
-  const user = {
-    first_name: 'Максат',
-    points: 1200,
-    group_id: 'ПОВТ-1-20',
-    achievements_count: 4,
-    recent_activity: [
-      'Получено достижение «Мастер домашек»',
-      'Завершена домашняя работа №5',
-    ],
-  };
-
   return (
-    <div className="my-10">
-      <Paper
-        elevation={3}
-        sx={{ padding: 3 }}
-        className="shadow-none border border-alto"
-      >
-        <Typography variant="h5" className="text-center font-bold">
-          Добро пожаловать, {user.first_name}!
+    <div className="my-10 flex flex-col gap-6">
+      <Paper elevation={3} className="p-5 shadow-none border border-alto">
+        <Typography variant="h5" className="font-bold">
+          Добро пожаловать, {userData.first_name}!
         </Typography>
-        <div className="mt-5 flex flex-col items-center gap-4">
-          <Paper
-            className="max-w-[150px] min-w-[150px] shadow-none border border-alto"
-            elevation={2}
-            sx={{
-              padding: 1,
-              backgroundColor: '#e3f2fd',
-            }}
-          >
-            <Chip
-              label={user.group_id}
-              color="primary"
-              className="text-white font-bold"
-              icon={<GroupIcon className="text-alto" />}
-            />
-            <p className="text-[15px] font-bold text-tundora">Группа</p>
-          </Paper>
-          <Paper
-            className="max-w-[150px] min-w-[150px] shadow-none border border-alto"
-            elevation={2}
-            sx={{
-              padding: 1,
-              backgroundColor: '#fff3e0',
-            }}
-          >
-            <Chip
-              label={`${user.points} баллов`}
-              color="warning"
-              className="text-white font-bold"
-              icon={<ElectricBoltIcon />}
-            />
-            <p className="text-[15px] font-bold text-tundora">Баллы</p>
-          </Paper>
-          <Paper
-            className="max-w-[150px] min-w-[150px] shadow-none border border-alto"
-            elevation={2}
-            sx={{
-              padding: 1,
-              backgroundColor: '#f1f8e9',
-            }}
-          >
-            <Chip
-              label={`${user.achievements_count} достижений`}
-              color="success"
-              className="text-white font-bold"
-              icon={<WorkspacePremiumIcon />}
-            />
-            <p className="text-[15px] font-bold text-tundora">Достижения</p>
-          </Paper>
+        <Typography variant="body1">
+          Уровень: {userData.level} • Баллы: {userData.points}
+        </Typography>
+      </Paper>
+
+      <Chart />
+
+      <Paper elevation={3} className="p-5 shadow-none border border-alto">
+        <Typography variant="h6" className="font-bold mb-3">
+          Лидеры недели
+        </Typography>
+        <List>
+          {userData.weekly_leaders.map((leader, index) => (
+            <ListItem key={index}>
+              <Avatar>{index + 1}</Avatar>
+              <ListItemText
+                primary={`${leader.name} • ${leader.points} баллов`}
+              />
+            </ListItem>
+          ))}
+        </List>
+      </Paper>
+
+      <Paper elevation={3} className="p-5 shadow-none border border-alto">
+        <Typography variant="h6" className="font-bold mb-3">
+          Последние достижения
+        </Typography>
+        <div className="flex gap-4">
+          {userData.achievements.map((ach) => (
+            <div key={ach.id} className="flex flex-col items-center">
+              <img src={ach.image} alt={ach.title} className="w-16 h-16" />
+              <Typography variant="body2" className="text-center">
+                {ach.title}
+              </Typography>
+            </div>
+          ))}
         </div>
-        <div className="mt-5">
-          <Typography variant="h6" className="text-center">
-            Последние активности
-          </Typography>
-          <ul className="list-disc pl-5">
-            {user.recent_activity.map((activity, index) => (
-              <li key={index} className="text-tundora">
-                {activity}
-              </li>
-            ))}
-          </ul>
-        </div>
+      </Paper>
+
+      <Paper elevation={3} className="p-5 shadow-none border border-alto">
+        <Typography variant="h6" className="font-bold mb-3">
+          Прогресс целей (скоро)
+        </Typography>
+        {userData.goals.map((goal) => (
+          <div key={goal.id} className="mb-4">
+            <Typography variant="body2">{goal.title}</Typography>
+            <LinearProgress variant="determinate" value={goal.progress} />
+            <Typography variant="caption">{goal.progress}%</Typography>
+          </div>
+        ))}
       </Paper>
     </div>
   );

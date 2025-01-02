@@ -11,6 +11,7 @@ import { rankingPageRoute } from '../../pages/ranking/ranking-page.route';
 import { GenericLayout, IntroLayout } from '../../pages/layout';
 import { coursePageRoute } from '~pages/course';
 import { badgesPageRoute } from '~pages/badges';
+import { aboutPageRoute } from '~pages/about';
 
 function BubbleError() {
   const error = useRouteError();
@@ -30,7 +31,8 @@ const router = createBrowserRouter([
           profilePageRoute,
           rankingPageRoute,
           coursePageRoute,
-          badgesPageRoute
+          badgesPageRoute,
+          aboutPageRoute,
         ],
       },
       {
