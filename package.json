@@ -28,10 +28,14 @@
     "react": "^18.3.1",
     "react-apexcharts": "^1.7.0",
     "react-dom": "^18.3.1",
+    "react-error-boundary": "^5.0.0",
     "react-router-dom": "^7.1.1",
+    "react-toastify": "^11.0.2",
     "recharts": "^2.15.0",
     "tailwind-merge": "^2.6.0",
-    "yup": "^1.6.1"
+    "typescript-cookie": "^1.0.6",
+    "yup": "^1.6.1",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",

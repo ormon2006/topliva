@@ -8,12 +8,11 @@ import {
   ListItemText,
 } from '@mui/material';
 import { Chart } from '~widgets/chart';
+import { StudentsRanking } from '~widgets/students-ranking';
 
 const userData = {
   first_name: 'Максат',
   points: 1200,
-  level: 5,
-  progress: 70,
   group_id: 'ПОВТ-1-20',
   achievements: [
     { id: 1, title: 'Мастер домашек', image: '/bade_1.svg' },
@@ -43,7 +42,7 @@ export function DashboardPage() {
           Добро пожаловать, {userData.first_name}!
         </Typography>
         <Typography variant="body1">
-          Уровень: {userData.level} • Баллы: {userData.points}
+          Группа: {userData.group_id} • Баллы: {userData.points}
         </Typography>
       </Paper>
 
@@ -53,16 +52,7 @@ export function DashboardPage() {
         <Typography variant="h6" className="font-bold mb-3">
           Лидеры недели
         </Typography>
-        <List>
-          {userData.weekly_leaders.map((leader, index) => (
-            <ListItem key={index}>
-              <Avatar>{index + 1}</Avatar>
-              <ListItemText
-                primary={`${leader.name} • ${leader.points} баллов`}
-              />
-            </ListItem>
-          ))}
-        </List>
+        <StudentsRanking/>
       </Paper>
 
       <Paper elevation={3} className="p-5 shadow-none border border-alto">
@@ -83,7 +73,7 @@ export function DashboardPage() {
 
       <Paper elevation={3} className="p-5 shadow-none border border-alto">
         <Typography variant="h6" className="font-bold mb-3">
-          Прогресс целей (скоро)
+          Прогресс целей 
         </Typography>
         {userData.goals.map((goal) => (
           <div key={goal.id} className="mb-4">

@@ -4,7 +4,10 @@ import {
   ThemeProvider,
   createTheme,
 } from '@mui/material';
-import "../index.css";
+import { QueryClientProvider as TanStackQueryClientProvider } from '@tanstack/react-query';
+import '../index.css';
+import { queryClient } from '~shared/lib/react-query/react-query.lib';
+import { ToastContainer } from 'react-toastify';
 
 const theme = createTheme({
   typography: {
@@ -15,11 +18,22 @@ const theme = createTheme({
 function App() {
   return (
     <>
-      <StyledEngineProvider injectFirst>
-        <ThemeProvider theme={theme}>
-          <BrowserRouter />
-        </ThemeProvider>
-      </StyledEngineProvider>
+      <TanStackQueryClientProvider client={queryClient}>
+        <StyledEngineProvider injectFirst>
+          <ThemeProvider theme={theme}>
+            <ToastContainer
+              position="top-right"
+              autoClose={1500}
+              hideProgressBar
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="colored"
+            />
+            <BrowserRouter />
+          </ThemeProvider>
+        </StyledEngineProvider>
+      </TanStackQueryClientProvider>
     </>
   );
 }

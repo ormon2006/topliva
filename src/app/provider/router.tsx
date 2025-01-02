@@ -37,7 +37,9 @@ const router = createBrowserRouter([
       },
       {
         element: <IntroLayout />,
-        children: [authPageRoute],
+        children: [
+          authPageRoute, 
+        ],
       },
     ],
   },

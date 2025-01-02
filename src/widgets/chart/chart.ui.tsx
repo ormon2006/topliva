@@ -55,10 +55,10 @@ const series = [
 export const Chart: React.FC = () => {
   return (
     <Card className="shadow-none rounded-lg border border-alto">
-      <CardHeader
-        title={<Typography variant="h6">Ваша статистика</Typography>}
-      />
-      <CardContent>
+      <Typography variant="h6" className="font-bold mb-3 px-4 pt-4">
+          График успеваемости 
+        </Typography>
+      <CardContent className='p-0'>
         <ReactApexChart
           options={options}
           series={series}

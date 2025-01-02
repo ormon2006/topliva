@@ -1,80 +1,123 @@
-import React from "react";
-import { TextField, Button, CircularProgress } from "@mui/material";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import { Title } from "~shared/ui/title";
+import { ErrorMessage, Field, Form, Formik, useFormikContext } from 'formik';
+import { userContracts, userQueries, userTypes } from '~entities/user';
+import { Button, IconButton, TextField } from '@mui/material';
+import { formikContract } from '~shared/lib/zod';
+import { withErrorBoundary } from 'react-error-boundary';
+import { ErrorHandler } from '~shared/ui/error';
+import { useState } from 'react';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-export function AuthPage() {
-  const formik = useFormik({
-    initialValues: {
-      username: "",
-      password: "",
-    },
-    validationSchema: Yup.object({
-      username: Yup.string().required("Обязательно").min(3, "Минимум 3 символа"),
-      password: Yup.string()
-        .min(6, "Минимум 6 символов")
-        .required("Обязательно"),
-    }),
-    onSubmit: (values) => {
-      console.log("Submitted values:", values);
-    },
-  });
+function Page() {
+  const [visibility, setVisibility] = useState(false);
+  const [active, setActive] = useState(false);
+
+  const handleClickShowPassword = () =>
+    setVisibility((visibility) => !visibility);
+
+  const {
+    mutate: loginToken,
+    isPending,
+    isError,
+  } = userQueries.useGetTokenMutation();
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <form
-        onSubmit={formik.handleSubmit}
-        className="w-full max-w-sm bg-white p-6 rounded-lg shadow-xl"
+    <div className="w-[380px]  mx-auto rounded-md px-5 py-7 ">
+      <h1 className="font-bold  text-2xl text-pc-500">
+        Вход в Bilim<span className="text-blue">Track</span>{' '}
+      </h1>
+      <Formik
+        initialValues={initialUser}
+        validate={validateForm}
+        onSubmit={(user) => loginToken({ user })}
       >
-        {/* <h1 className="text-2xl font-bold text-gray-800 text-center mb-6">
-          Авторизация
-        </h1> */}
-        <Title className="text-center">Добро пожаловать в BilimTrack!</Title>
-        <div className="mb-4">
-          <TextField
-            fullWidth
-            id="username"
-            name="username"
-            label="Имя пользователя"
-            variant="outlined"
-            value={formik.values.username}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.username && Boolean(formik.errors.username)}
-            helperText={formik.touched.username && formik.errors.username}
-          />
-        </div>
-        <div className="mb-6">
-          <TextField
-            fullWidth
-            id="password"
-            name="password"
-            label="Пароль"
-            type="password"
-            variant="outlined"
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.password && Boolean(formik.errors.password)}
-            helperText={formik.touched.password && formik.errors.password}
-          />
-        </div>
-        <Button
-          type="submit"
-          variant="contained"
-          fullWidth
-          className="bg-green hover:bg-green text-white font-semibold shadow-none"
-          aria-label="Авторизоваться"
-          disabled={formik.isSubmitting}
-        >
-          {formik.isSubmitting ? (
-            <CircularProgress size={24} color="inherit" />
+        <Form>
+          <fieldset disabled={isPending} className="text-xs text-[red]">
+            <fieldset className="my-5">
+              <Field
+                as={TextField}
+                fullWidth
+                id="username"
+                name="username"
+                label="Username"
+                size="small"
+                className="rounded-lg"
+              />
+              <ErrorMessage name="email" />
+            </fieldset>
+            <fieldset className="my-5">
+              <Field
+                as={TextField}
+                fullWidth
+                id="password"
+                name="password"
+                label="Пароль"
+                type={visibility ? 'text' : 'password'}
+                size="small"
+                InputProps={{
+                  endAdornment: (
+                    <IconButton
+                      aria-label="password-visibility"
+                      size="small"
+                      color="info"
+                      onClick={handleClickShowPassword}
+                    >
+                      {visibility ? (
+                        <Visibility className="text-blue" />
+                      ) : (
+                        <VisibilityOff className="text-blue" />
+                      )}
+                    </IconButton>
+                  ),
+                }}
+              />
+              <ErrorMessage name="password" />
+            </fieldset>
+          </fieldset>
+          {isPending ? (
+            <Button
+              variant="contained"
+              disabled
+              className=" text-center  w-full"
+            >
+              Выполняется вход...
+            </Button>
           ) : (
-            "Войти"
+            <SubmitButton />
           )}
-        </Button>
-      </form>
+        </Form>
+      </Formik>
+
+      {isError && (
+        <p className="text-center text-xs text-red">
+          Ошибка при выполнении запроса
+        </p>
+      )}
     </div>
   );
 }
+
+const initialUser: userTypes.LoginUserDto = {
+  username: '',
+  password: '',
+};
+
+function SubmitButton() {
+  const { isValidating, isValid } = useFormikContext();
+  return (
+    <Button
+      variant="contained"
+      type="submit"
+      className="w-full mb-2 bg-blue shadow-none"
+      disabled={!isValid || isValidating}
+    >
+      Войти
+    </Button>
+  );
+}
+
+const validateForm = formikContract(userContracts.LoginUserDtoSchema);
+
+export const AuthPage = withErrorBoundary(Page, {
+  fallbackRender: ({ error }) => <ErrorHandler error={error} />,
+});

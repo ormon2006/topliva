@@ -1,4 +1,3 @@
-import React from "react";
 import { Box, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { pathKeys } from "~shared/lib/react-router";
@@ -9,7 +8,7 @@ import WidgetsIcon from "@mui/icons-material/Widgets";
 
 export function Footer() {
   return (
-    <Box component="footer" className="bg-tundora text-white py-6">
+    <Box component="footer" className="bg-tundora text-white py-6 px-40">
       <div className="container mx-auto px-4 pb-7 flex flex-col sm:flex-row items-center justify-around">
         <Link to={pathKeys.home()} className="flex items-center mb-4 sm:mb-0">
           <SchoolIcon />
@@ -45,9 +44,9 @@ export function Footer() {
 
       <Typography
         variant="body2"
-        className="text-gray-400 text-center mt-4 text-sm sm:text-base"
+        className="text-gray-400 text-center mt-4 text-sm  flex items-center justify-center gap-3"
       >
-        &copy; {new Date().getFullYear()} OurEra Soft. Все права защищены.
+       Developed by OurEra Soft
       </Typography>
     </Box>
   );

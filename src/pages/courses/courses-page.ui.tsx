@@ -18,9 +18,9 @@ const courses = [
 
 export function CoursesPage() {
   return (
-    <div>
+    <div className='w-[90%] mx-auto'>
       <Title>Мои курсы</Title>
-      <div className="flex flex-col gap-5 mb-20">
+      <div className="flex flex-col gap-5 mb-20 mx-auto">
         {courses.map((course) => (
           <CourseCard
             key={course.slug}

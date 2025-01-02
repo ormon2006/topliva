@@ -7,9 +7,9 @@ import { BadgeCard } from '~widgets/badge-card';
 
 interface Achievement {
   id: number;
-  name: string;
+  title: string;
   description: string;
-  photo_url: string;
+  image: string;
   rarity: string;
 }
 
@@ -39,41 +39,40 @@ const profileData: Profile = {
       image: '/bade_1.svg',
       title: 'Мастер домашек',
       description: 'Не пропускайте 5 домашек подряд.',
-      rarity: 'Эпическое',
+      rarity: 'Эпическая',
     },
     {
       id: 3,
       image: '/team.svg',
       title: 'Командный игрок',
       description: 'Примите участие в 10 командных проектах.',
-      rarity: 'Легендарное',
+      rarity: 'Легендарная',
     },
     {
       id: 5,
       image: '/mentor.svg',
       title: 'Наставник',
       description: 'Помогите 10 коллегам в их проектах.',
-      rarity: 'Легендарное',
+      rarity: 'Легендарная',
     },
     {
       id: 7,
       image: '/success.svg',
       title: 'Перфекционист',
       description: 'Получите 100% результат в 5 проектах.',
-      rarity: 'Эпическое',
+      rarity: 'Эпическая',
     },
   ],
-};
-
-const rarityTranslations = {
-  Эпическое: 'Epic',
-  Легендарное: 'Legendary',
 };
 
 export function ProfilePage() {
   return (
     <div className="my-10">
-      <Paper elevation={3} sx={{ padding: 3 }} className='shadow-none border border-alto'>
+      <Paper
+        elevation={3}
+        sx={{ padding: 3 }}
+        className="shadow-none border border-alto"
+      >
         <div className="items-center">
           <div className="flex flex-col items-center">
             <Avatar
@@ -179,7 +178,7 @@ export function ProfilePage() {
                   image={achievement.image}
                   title={achievement.title}
                   description={achievement.description}
-                  rarity={rarityTranslations[achievement.rarity] || achievement.rarity}
+                  rarity={achievement.rarity}
                 />
               ))}
             </div>
