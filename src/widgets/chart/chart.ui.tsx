@@ -20,7 +20,7 @@ const chartData: ChartDataPoint[] = [
   { date: '02-01', score: 9 },
   { date: '02-15', score: 6 },
   { date: '03-01', score: 10 },
-  { date: '03-15', score: 7 },
+  { date: '01-01', score: 7 },
 ];
 
 const options: ApexCharts.ApexOptions = {
@@ -54,11 +54,11 @@ const series = [
 
 export const Chart: React.FC = () => {
   return (
-    <Card className="shadow-none rounded-lg border border-alto">
+    <Card className="max-w-[320px] min-w-[320px] shadow-none rounded-lg border border-alto">
       <Typography variant="h6" className="font-bold mb-3 px-4 pt-4">
-          График успеваемости 
-        </Typography>
-      <CardContent className='p-0'>
+        График успеваемости
+      </Typography>
+      <CardContent className="p-0">
         <ReactApexChart
           options={options}
           series={series}
@@ -66,19 +66,6 @@ export const Chart: React.FC = () => {
           height={350}
         />
       </CardContent>
-      <CardActions>
-        <Typography className='text-sm font-bold'>
-          Отличный прогресс! Продолжай в том же духе!
-        </Typography>
-      </CardActions>
-      {/* <CardActions className="p-4 flex justify-between items-center">
-        <div>
-          <Typography variant="body2" className="font-medium text-green-600">
-            Отличный прогресс!
-          </Typography>
-        </div>
-        <TrendingUpIcon className="text-green-600" />
-      </CardActions> */}
     </Card>
   );
 };

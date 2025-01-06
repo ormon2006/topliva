@@ -5,6 +5,7 @@ import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
 import GroupIcon from '@mui/icons-material/Group';
 import { BadgeCard } from '~widgets/badge-card';
 import { userQueries } from '~entities/user';
+import { Chart } from '~widgets/chart';
 
 
 interface Achievement {
@@ -44,10 +45,10 @@ export function ProfilePage() {
   }
 
   return (
-    <div className="my-10">
+    <div className="my-10 max-w-[400px]">
       <Paper
         elevation={3}
-        sx={{ padding: 3 }}
+        sx={{ padding: 2 }}
         className="shadow-none border border-alto"
       >
         <div className="items-center">
@@ -64,7 +65,7 @@ export function ProfilePage() {
               {userData.data.firstName} {userData.data.lastName}
             </Typography>
           </div>
-
+ 
           <div className="mt-5 flex flex-col items-center">
             <div className="flex flex-col gap-4 ">
               <div className="flex gap-4">
@@ -141,6 +142,9 @@ export function ProfilePage() {
             </div>
           </div>
 
+          <div className="mt-5  flex flex-col items-center">
+          <Chart/>
+          </div>
           <div className="mt-5 flex flex-col items-center">
             <Typography
               variant="h6"
