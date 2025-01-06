@@ -63,3 +63,8 @@ export const UserDtoSchema = z.object({
   role: z.string(),
   photo: z.string(),
 });
+
+export const achiviement = z.object({
+  id:z.number(),
+  name:z.string()
+})

@@ -16,7 +16,6 @@ export function Footer() {
             BilimTrack
           </Typography>
         </Link>
-
         <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6">
           <Link to="/about" className="text-gray-300 hover:text-white text-sm">
             О платформе

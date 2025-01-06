@@ -17,6 +17,14 @@ export function getTokenMutation(params: { user: LoginUserDto }) {
   return $api.post<TokensDtoSchema>('jwt/create/', params.user);
 }
 
+export function getAchiviements(){
+  return $api.get('/achiviement/alls')
+}
+
+export function getOneAchiviement(){
+  return $api.get('/achiviement/:id')
+}
+
 export function loginUserQuery() {
   return $api.get<UserDtoSchema>('users/me');
 }

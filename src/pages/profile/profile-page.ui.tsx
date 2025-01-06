@@ -4,6 +4,8 @@ import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
 import GroupIcon from '@mui/icons-material/Group';
 import { BadgeCard } from '~widgets/badge-card';
+import { userQueries } from '~entities/user';
+
 
 interface Achievement {
   id: number;
@@ -25,47 +27,22 @@ interface Profile {
   achievements: Achievement[];
 }
 
-const profileData: Profile = {
-  username: 'maksat.up',
-  email: 'student@example.com',
-  first_name: 'Максат',
-  last_name: 'Каныбеков',
-  photo_url: 'https://api.makalabox.com/media/user_photos/profile4_5vTShTk.jpg',
-  group_id: 'ПОВТ-1-20',
-  points: 1200,
-  achievements: [
-    {
-      id: 1,
-      image: '/bade_1.svg',
-      title: 'Мастер домашек',
-      description: 'Не пропускайте 5 домашек подряд.',
-      rarity: 'Эпическая',
-    },
-    {
-      id: 3,
-      image: '/team.svg',
-      title: 'Командный игрок',
-      description: 'Примите участие в 10 командных проектах.',
-      rarity: 'Легендарная',
-    },
-    {
-      id: 5,
-      image: '/mentor.svg',
-      title: 'Наставник',
-      description: 'Помогите 10 коллегам в их проектах.',
-      rarity: 'Легендарная',
-    },
-    {
-      id: 7,
-      image: '/success.svg',
-      title: 'Перфекционист',
-      description: 'Получите 100% результат в 5 проектах.',
-      rarity: 'Эпическая',
-    },
-  ],
-};
-
 export function ProfilePage() {
+
+  const {
+    data:userData,
+    isLoading,
+    isError
+  } = userQueries.useLoginUserQuery();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error fetching user data.</div>;
+  }
+
   return (
     <div className="my-10">
       <Paper
@@ -77,14 +54,14 @@ export function ProfilePage() {
           <div className="flex flex-col items-center">
             <Avatar
               alt="User Photo"
-              src={profileData.photo_url}
+              src={userData.data.photo}
               sx={{ width: 100, height: 100 }}
             />
             <Typography variant="body2" color="textSecondary" className="mt-2">
-              @{profileData.username}
+              @{userData.data.username}
             </Typography>
             <Typography variant="h6" className="text-center">
-              {profileData.first_name} {profileData.last_name}
+              {userData.data.firstName} {userData.data.lastName}
             </Typography>
           </div>
 
@@ -100,7 +77,7 @@ export function ProfilePage() {
                   }}
                 >
                   <Chip
-                    label={profileData.group_id}
+                    label={userData.data.group}
                     color="primary"
                     className="text-white font-bold"
                     icon={<GroupIcon className="text-alto" />}
@@ -117,7 +94,7 @@ export function ProfilePage() {
                   }}
                 >
                   <Chip
-                    label="1"
+                    label={userData.data.rating}
                     color="success"
                     className="text-white font-bold"
                     icon={<EmojiEvents className="text-sun" />}
@@ -136,7 +113,7 @@ export function ProfilePage() {
                   }}
                 >
                   <Chip
-                    label={profileData.achievements.length}
+                    label={userData.data.achiviementsCount}
                     color="warning"
                     className="text-white font-bold"
                     icon={<WorkspacePremiumIcon />}
@@ -154,7 +131,7 @@ export function ProfilePage() {
                   }}
                 >
                   <Chip
-                    label={profileData.points}
+                    label={userData.data.points}
                     className="bg-cinnabar text-white font-bold"
                     icon={<ElectricBoltIcon className="text-yellow" />}
                   />
@@ -172,7 +149,7 @@ export function ProfilePage() {
               Достижения
             </Typography>
             <div className="flex flex-col items-center gap-5">
-              {profileData.achievements.map((achievement) => (
+              {userData.data.achievements?.map((achievement) => (
                 <BadgeCard
                   key={achievement.id}
                   image={achievement.image}

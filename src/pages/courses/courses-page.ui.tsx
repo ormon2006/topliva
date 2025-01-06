@@ -3,8 +3,8 @@ import { CourseCard } from '~widgets/course-card';
 
 const courses = [
   {
-    title: 'Основы программирования',
-    description: 'Научитесь базовым концепциям программирования.',
+    title: 'Основы Product Managemant.',
+    description: 'Научитесь базовым концепциям Product Managemant',
     image: 'https://i.pinimg.com/736x/29/60/14/29601413f2151b635b20b95da4285f61.jpg',
     slug: 'intro-to-programming',
   },

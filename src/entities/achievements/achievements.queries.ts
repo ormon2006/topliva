@@ -77,27 +77,7 @@ export function useLoginUserQuery() {
   });
 }
 
-export function useGetTokenMutation() {
-  const navigate = useNavigate();
-  return useMutation({
-    mutationKey: keys.getToken(),
-    mutationFn: getTokenMutation,
-    onSuccess: async (response) => {
-      setCookie('access', response.data.access);
-      localStorage.setItem('refresh', response.data.refresh);
-      localStorage.removeItem('username');
-      localStorage.removeItem('password');
-      toast.success('Вы успешно авторизовались!', { autoClose: 500 });
-      navigate(pathKeys.profile.root());
-    },
-    onError: (error: AxiosErrorType) => {
-      const errorMessage = error.response
-        ? error.response.data.detail
-        : 'Ошибка при выполнении запроса';
-      toast.error(errorMessage);
-    },
-  });
-}
+
 
 export function useRegisterMutation() {
   return useMutation({

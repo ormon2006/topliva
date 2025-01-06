@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Navigate, Outlet} from 'react-router-dom';
 import { Footer } from '~widgets/footer';
 import { Header } from '~widgets/header';
 import { Navigator } from '~widgets/navigator';
@@ -22,4 +22,16 @@ export function IntroLayout() {
       <Outlet />
     </div>
   );
+}
+
+interface ProtectedRouteProps {
+  isAuthenticated: boolean;
+  redirectPath?: string;
+}
+
+export function ProtectedRoute({
+  isAuthenticated,
+  redirectPath = '/auth',
+}: ProtectedRouteProps) {
+  return isAuthenticated ? <Outlet /> : <Navigate to={redirectPath} replace />;
 }

@@ -66,6 +66,11 @@ export const Chart: React.FC = () => {
           height={350}
         />
       </CardContent>
+      <CardActions>
+        <Typography className='text-sm font-bold'>
+          Отличный прогресс! Продолжай в том же духе!
+        </Typography>
+      </CardActions>
       {/* <CardActions className="p-4 flex justify-between items-center">
         <div>
           <Typography variant="body2" className="font-medium text-green-600">
