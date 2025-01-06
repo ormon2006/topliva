@@ -57,7 +57,6 @@ export function BadgeCard({
 }: BadgeCardProps) {
   const rarityStyle = rarityColors.find((r) => r.rarity === rarity);
 
-  const achievement = "getCache()";
   return (
     <Card
       className={`shadow-none border border-alto rounded-lg overflow-hidden max-w-[320px] min-w-[320px] transition duration-300 hover:scale-[1.005]  ${

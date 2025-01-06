@@ -1,37 +1,8 @@
 import { Box, Chip, Tooltip, Typography } from '@mui/material';
+import { achievementsQueries } from '~entities/achievements';
 import { Title } from '~shared/ui/title';
 import { BadgeCard } from '~widgets/badge-card';
-
-const badges = [
-  {
-    id: 1,
-    image: '/bade_1.svg',
-    title: 'Мастер домашек',
-    description: 'Не пропускайте 5 домашек подряд.',
-    rarity: 'Эпическая',
-  },
-  {
-    id: 3,
-    image: '/team.svg',
-    title: 'Командный игрок',
-    description: 'Примите участие в 10 командных проектах.',
-    rarity: 'Мифическая',
-  },
-  {
-    id: 5,
-    image: '/mentor.svg',
-    title: 'Наставник',
-    description: 'Помогите 10 коллегам в их проектах.',
-    rarity: 'Легендарная',
-  },
-  {
-    id: 7,
-    image: '/success.svg',
-    title: 'Перфекционист',
-    description: 'Получите 100% результат в 5 проектах.',
-    rarity: 'Эксклюзивная',
-  },
-];
+import { userQueries } from '~entities/user';
 
 const rarityColors = [
   {
@@ -79,6 +50,38 @@ const rarityColors = [
 ];
 
 export function BadgesPage() {
+  const {
+    data: achievementData,
+    isLoading,
+    isError,
+  } = achievementsQueries.useAchievements();
+
+  const {
+    data: myachievementData,
+    isMyLoading,
+    isMyError,
+  } = userQueries.useLoginUserQuery();
+
+  if (isLoading || isMyLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError || isMyError) {
+    return <div>Error fetching user data.</div>;
+  }
+
+  const myAchievementsIds = myachievementData.data.achievements.map(
+    (achievement) => achievement.id
+  );
+
+  // Фильтрация всех достижений: только недостигнутые
+  const filteredAchievements = achievementData.data
+    .filter((achievement) => !myAchievementsIds.includes(achievement.id))
+    .map((achievement) => ({
+      ...achievement,
+      hasAchievement: false, // Устанавливаем статус недостигнутых
+    }));
+
   return (
     <>
       <Title>Доска достижений</Title>
@@ -112,18 +115,35 @@ export function BadgesPage() {
           )
         )}
       </div>
-      <h5 className="font-bold my-3 text-[20px] text-tundora">
-        Мои достижения:
-      </h5>
+      <h5 className="font-bold my-3 text-[20px] text-tundora">Мои достижения:</h5>
       <div className="flex flex-wrap gap-10 my-5">
-        {badges.map((achievement) => (
+        {myachievementData.data.achievements.map((achievement) => (
           <BadgeCard
             key={achievement.id}
-            image={achievement.image}
-            title={achievement.title}
+            image={achievement.photo}
+            title={achievement.name}
             description={achievement.description}
-            rarity={achievement.rarity}
+            rarity={achievement.rarity.name}
           />
+        ))}
+      </div>
+      
+      <h5 className="font-bold my-3 text-[20px] text-tundora">Все достижения:</h5>
+      <div className="flex flex-wrap gap-10 my-5">
+        {filteredAchievements.map((achievement) => (
+          <Box key={achievement.id} className="relative">
+            <BadgeCard
+              image={achievement.photo}
+              title={achievement.name}
+              description={achievement.description}
+              rarity={achievement.rarity.name}
+            />
+            <Box className="absolute top-0 left-0 w-full h-full bg-black/70 rounded-md flex items-center justify-center">
+              <Typography variant="h6" className="text-white font-bold text-2xl">
+                Не достигнуто
+              </Typography>
+            </Box>
+          </Box>
         ))}
       </div>
     </>

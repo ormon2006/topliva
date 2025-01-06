@@ -152,10 +152,10 @@ export function ProfilePage() {
               {userData.data.achievements?.map((achievement) => (
                 <BadgeCard
                   key={achievement.id}
-                  image={achievement.image}
-                  title={achievement.title}
+                  image={achievement.photo}
+                  title={achievement.name}
                   description={achievement.description}
-                  rarity={achievement.rarity}
+                  rarity={achievement.rarity.name}
                 />
               ))}
             </div>

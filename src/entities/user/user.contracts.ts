@@ -1,6 +1,5 @@
-import { group } from 'console';
 import { z } from 'zod';
-import { achiviement } from './../achievements/achievements.contracts';
+import { AchievementSchema } from './../achievements/achievements.contracts';
 
 export const LoginUserDtoSchema = z.object({
   username: z.string(),
@@ -50,19 +49,7 @@ export const SendEmail = z.object({
     .min(1, 'Введите ваш  email'),
 });
 
-const RaritySchema = z.object({
-  id: z.number(),
-  name: z.string(),
-});
 
-const AchievementSchema = z.object({
-  id: z.number(),
-  name: z.string(),
-  description: z.string(),
-  photo: z.string(),
-  rarity: RaritySchema,
-  createdAt: z.string().datetime(),
-});
 
 export const UserDtoSchema = z.object({
   id: z.number(),
