@@ -15,29 +15,28 @@ import { rankingQueries } from '~entities/ranking';
 export function StudentsRanking() {
   const transformStudentData = (data: any[]) => {
     return data.map((student, index) => ({
-      rank: index + 1, // Ранг на основе позиции в массиве
-      name: `${student.lastName} ${student.firstName}`, // Полное имя
-      points: student.points, // Очки студента
-      avatar: student.photo || 'https://via.placeholder.com/40', // Фото или заглушка
-      username: student.username, // Имя пользователя
+      rank: index + 1,
+      name: `${student.lastName} ${student.firstName}`,
+      points: student.points,
+      avatar: student.photo || 'https://via.placeholder.com/40',
+      username: student.username,
     }));
   };
-  
+
   // Пример использования
   const {
     data: studentsRanking,
     isLoading,
     isError,
   } = rankingQueries.useGetRankingByStudents();
-  
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
-  
+
   if (isError) {
     return <div>Error fetching user data.</div>;
   }
-  
 
   const studentRankings = transformStudentData(studentsRanking.data);
 

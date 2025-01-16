@@ -25,7 +25,6 @@ export function GroupsRanking() {
     return <div>Error fetching user data.</div>;
   }
 
-  // Преобразуем данные
   const groupRankings = groupsRanking.data
     .sort((a: { points: number }, b: { points: number }) => b.points - a.points)
     .map((group: { id: number; name: string; points: number }, index: number) => ({

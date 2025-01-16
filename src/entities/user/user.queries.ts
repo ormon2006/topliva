@@ -1,6 +1,7 @@
 import {
   editUserProfile,
   emailActivationMutation,
+  getPerfomanceChart,
   getTokenMutation,
   getUserByUsername,
   loginUserQuery,
@@ -25,6 +26,7 @@ const keys = {
   root: () => ['user'],
   getToken: () => [...keys.root(), 'getToken'] as const,
   loginUser: () => [...keys.root(), 'loginUser'] as const,
+  chart:() => [...keys.root(), "chart"] as const,
   registerUser: () => [...keys.root(), 'registerUser'] as const,
   user: (username: string) => [...keys.root(), 'username', username] as const,
 };
@@ -207,5 +209,14 @@ export function useGetUserByUsername(username: string) {
   return useQuery({
     queryKey: keys.user(username),
     queryFn: () => getUserByUsername(username),
+  });
+}
+
+
+
+export function useGetUserPerfomanceChart() {
+  return useQuery({
+    queryKey: keys.chart(),
+    queryFn: () => getPerfomanceChart(),
   });
 }

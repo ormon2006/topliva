@@ -44,3 +44,7 @@ export function resetPasswordEmail(params: { email: SendEmail }) {
 export function resetPasswordConfirm(params: { data: UpdatePassword }) {
   return axios.post(`${API}/reset_password_confirm/`, params.data);
 }
+
+export function getPerfomanceChart() {
+  return $api.get('perfomance-chart/me');
+}
