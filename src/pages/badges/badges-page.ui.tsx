@@ -1,4 +1,4 @@
-import { Box, Chip, Tooltip, Typography } from '@mui/material';
+import { Box, Card, Chip, Tooltip, Typography } from '@mui/material';
 import { achievementsQueries } from '~entities/achievements';
 import { Title } from '~shared/ui/title';
 import { BadgeCard } from '~widgets/badge-card';
@@ -129,6 +129,7 @@ export function BadgesPage() {
       </div>
       
       <h5 className="font-bold my-3 text-[20px] text-tundora">Все достижения:</h5>
+
       <div className="flex flex-wrap gap-10 my-5">
         {filteredAchievements.map((achievement) => (
           <Box key={achievement.id} className="relative">

@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosError } from 'axios';
-import { getCookie, setCookie } from 'typescript-cookie';
+import {  getCookie, setCookie } from 'typescript-cookie';
 
 export const API_URL = 'https://api.bilim-track.makalabox.com/api/';
 

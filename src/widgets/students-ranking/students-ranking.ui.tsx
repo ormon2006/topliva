@@ -1,4 +1,3 @@
-
 import {
   Table,
   TableBody,
@@ -11,34 +10,36 @@ import {
 } from '@mui/material';
 
 import { Link } from 'react-router-dom';
+import { rankingQueries } from '~entities/ranking';
 
 export function StudentsRanking() {
+  const transformStudentData = (data: any[]) => {
+    return data.map((student, index) => ({
+      rank: index + 1, // Ранг на основе позиции в массиве
+      name: `${student.lastName} ${student.firstName}`, // Полное имя
+      points: student.points, // Очки студента
+      avatar: student.photo || 'https://via.placeholder.com/40', // Фото или заглушка
+      username: student.username, // Имя пользователя
+    }));
+  };
+  
+  // Пример использования
+  const {
+    data: studentsRanking,
+    isLoading,
+    isError,
+  } = rankingQueries.useGetRankingByStudents();
+  
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  
+  if (isError) {
+    return <div>Error fetching user data.</div>;
+  }
+  
 
-
-  const studentRankings = [
-    {
-      rank: 1,
-      name: 'Иванов Иван',
-      points: 1500,
-      avatar:
-        'https://via.placeholder.com/40',
-      username: 'ivan',
-    },
-    {
-      rank: 2,
-      name: 'Асанов Асан',
-      points: 1500,
-      avatar: 'https://via.placeholder.com/40',
-      username: 'asan',
-    },
-    {
-      rank: 3,
-      name: 'John Snow',
-      points: 1300,
-      avatar: 'https://via.placeholder.com/40',
-      username: 'j.snow',
-    },
-  ];
+  const studentRankings = transformStudentData(studentsRanking.data);
 
   const getMedalStyle = (rank: number) => {
     switch (rank) {
@@ -67,92 +68,93 @@ export function StudentsRanking() {
   };
 
   return (
-          <TableContainer
-            component={Paper}
-            className="shadow-none border border-alto md:overflow-x-hidden md:max-w-full overflow-x-auto max-w-[350px] "
-          >
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Место</TableCell>
-                  <TableCell>Студент</TableCell>
-                  <TableCell align="right">Баллы</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {studentRankings.map((student) => (
-                  <TableRow key={student.rank} style={{ height: '64px' }}>
-                    <TableCell align="center" style={{ width: '50px' }}>
-                      {student.rank <= 3 ? (
-                        <div className="relative">
-                          <img
-                            src={`/medal_${student.rank}.svg`}
-                            alt={`Медаль за ${student.rank} место`}
-                            className="w-15 h-15 max-w-15 min-w-15 max-h-15 min-h-15"
-                          />
-                          <div
-                            className={`w-[18px] h-[18px] text-tundora absolute top-[13%] left-[30%] text-[12px] rounded-full font-bold flex justify-center items-center ${getBackgroundColor(
-                              student.rank
-                            )}`}
-                          >
-                            {student.rank}
-                          </div>
-                        </div>
-                      ) : (
-                        <span
-                          style={{
-                            fontSize: '12px',
-                            lineHeight: '64px',
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          {student.rank}
-                        </span>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      {student.rank <= 3 ? (
-                        <div
-                          className="flex items-center space-x-2"
-                          style={{ display: 'flex', alignItems: 'center' }}
-                        >
-                          <Avatar src={student.avatar} alt={student.name} />
-                          <div className="flex flex-col">
-                            <span className={`${getMedalStyle(student.rank)}`}>
-                              {student.name}
-                            </span>
-                            <Link
-                              to="/"
-                              className="font-semibold text-[13px] text-dove hover:underline hover:cursor-pointer"
-                            >
-                              @{student.username}
-                            </Link>
-                          </div>
-                        </div>
-                      ) : (
-                        <div
-                          className="flex items-center space-x-2"
-                          style={{ display: 'flex', alignItems: 'center' }}
-                        >
-                          <Avatar src={student.avatar} alt={student.name} />
-                          <div className="flex flex-col">
-                            <span>{student.name}</span>
-                            <Link
-                              to="/"
-                              className="font-semibold text-[13px] text-dove hover:underline hover:cursor-pointer"
-                            >
-                              @{student.username}
-                            </Link>
-                          </div>
-                        </div>
-                      )}
-                    </TableCell>
-                    <TableCell align="right" className='font-bold text-tundora'>{student.points}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-
+    <TableContainer
+      component={Paper}
+      className="shadow-none border border-alto md:overflow-x-hidden md:max-w-full overflow-x-auto max-w-[350px] "
+    >
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>Место</TableCell>
+            <TableCell>Студент</TableCell>
+            <TableCell align="right">Баллы</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {studentRankings.map((student) => (
+            <TableRow key={student.rank} style={{ height: '64px' }}>
+              <TableCell align="center" style={{ width: '50px' }}>
+                {student.rank <= 3 ? (
+                  <div className="relative">
+                    <img
+                      src={`/medal_${student.rank}.svg`}
+                      alt={`Медаль за ${student.rank} место`}
+                      className="w-15 h-15 max-w-15 min-w-15 max-h-15 min-h-15"
+                    />
+                    <div
+                      className={`w-[18px] h-[18px] text-tundora absolute top-[13%] left-[30%] text-[12px] rounded-full font-bold flex justify-center items-center ${getBackgroundColor(
+                        student.rank
+                      )}`}
+                    >
+                      {student.rank}
+                    </div>
+                  </div>
+                ) : (
+                  <span
+                    style={{
+                      fontSize: '12px',
+                      lineHeight: '64px',
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    {student.rank}
+                  </span>
+                )}
+              </TableCell>
+              <TableCell>
+                {student.rank <= 3 ? (
+                  <div
+                    className="flex items-center space-x-2"
+                    style={{ display: 'flex', alignItems: 'center' }}
+                  >
+                    <Avatar src={student.avatar} alt={student.name} />
+                    <div className="flex flex-col">
+                      <span className={`${getMedalStyle(student.rank)}`}>
+                        {student.name}
+                      </span>
+                      <Link
+                        to="/"
+                        className="font-semibold text-[13px] text-dove hover:underline hover:cursor-pointer"
+                      >
+                        @{student.username}
+                      </Link>
+                    </div>
+                  </div>
+                ) : (
+                  <div
+                    className="flex items-center space-x-2"
+                    style={{ display: 'flex', alignItems: 'center' }}
+                  >
+                    <Avatar src={student.avatar} alt={student.name} />
+                    <div className="flex flex-col">
+                      <span>{student.name}</span>
+                      <Link
+                        to="/"
+                        className="font-semibold text-[13px] text-dove hover:underline hover:cursor-pointer"
+                      >
+                        @{student.username}
+                      </Link>
+                    </div>
+                  </div>
+                )}
+              </TableCell>
+              <TableCell align="right" className="font-bold text-tundora">
+                {student.points}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 }
