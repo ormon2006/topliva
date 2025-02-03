@@ -10,91 +10,47 @@ import {
   Button,
   TextField,
 } from '@mui/material';
-import { subjectQueries } from '~entities/subject';
+import { useCreateGrades } from '~entities/subject/subject.queries';
 
-const usersData = [
-  {
-    id: 3,
-    fullName: 'Азирет Асанов',
-    username: 'aziret',
-    scores: [
-      { id: 1, date: '2025-01-25', grade: 5 },
-      { id: 2, date: '2025-01-26', grade: 4 },
-      { id: 3, date: '2025-01-27', grade: 3 },
-      { id: 4, date: '2025-01-28', grade: 2 },
-      { id: 5, date: '2025-01-29', grade: 1 },
-      { id: 6, date: '2025-01-30', grade: 4 },
-      { id: 7, date: '2025-01-31', grade: 5 },
-      { id: 8, date: '2025-02-01', grade: 3 },
-      { id: 9, date: '2025-02-02', grade: 2 },
-    ],
-  },
-  {
-    id: 3,
-    fullName: 'Азирет Асанов',
-    username: 'aziret',
-    scores: [
-      { id: 1, date: '2025-01-25', grade: 5 },
-      { id: 2, date: '2025-01-26', grade: 4 },
-      { id: 3, date: '2025-01-27', grade: 3 },
-      { id: 4, date: '2025-01-28', grade: 2 },
-      { id: 5, date: '2025-01-29', grade: 1 },
-      { id: 6, date: '2025-01-30', grade: 4 },
-      { id: 7, date: '2025-01-31', grade: 5 },
-      { id: 8, date: '2025-02-01', grade: 3 },
-      { id: 9, date: '2025-02-02', grade: 2 },
-    ],
-  },
-  {
-    id: 3,
-    fullName: 'Азирет Асанов',
-    username: 'aziret',
-    scores: [
-      { id: 1, date: '2025-01-25', grade: 5 },
-      { id: 2, date: '2025-01-26', grade: 4 },
-      { id: 3, date: '2025-01-27', grade: 3 },
-      { id: 4, date: '2025-01-28', grade: 2 },
-      { id: 5, date: '2025-01-29', grade: 1 },
-      { id: 6, date: '2025-01-30', grade: 4 },
-      { id: 7, date: '2025-01-31', grade: 5 },
-      { id: 8, date: '2025-02-01', grade: 3 },
-      { id: 9, date: '2025-02-02', grade: 2 },
-    ],
-  },
-];
-
-export function Journal(): JSX.Element {
-
-  
+export function Journal({ usersData, subjectId }): JSX.Element {
   const [dates, setDates] = useState<string[]>([]);
   const [users, setUsers] = useState<any[]>([]);
   const [visibleRange, setVisibleRange] = useState([0, 4]);
   const [selectedCell, setSelectedCell] = useState({ row: 0, col: 0 });
   const inputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
+  const [sentGrades, setSentGrades] = useState<{ [key: string]: boolean }>({});
+
+  const { mutate: createGrade } = useCreateGrades();
 
   useEffect(() => {
     const allDates = new Set<string>();
     usersData.forEach((user) =>
       user.scores.forEach((score) => allDates.add(score.date))
     );
-    const sortedDates = Array.from(allDates).sort();
 
+    const today = new Date().toISOString().split('T')[0];
+    allDates.add(today);
+
+    const sortedDates = Array.from(allDates).sort();
     setDates(sortedDates);
 
-    const transformed = usersData.map((user) => {
-      const scoresMap = user.scores.reduce(
+    const transformed = usersData.map((entry) => {
+      const scoresMap = entry.scores.reduce(
         (acc, score) => ({ ...acc, [score.date]: score.grade }),
         {}
       );
 
       return {
-        fullName: `${user.fullName || 'Неизвестно'} (${user.username})`,
+        id: entry.user.id,
+        fullName: `${entry.user.fullName?.trim() || 'Неизвестно'} (${
+          entry.user.username
+        })`,
         scores: scoresMap,
       };
     });
 
     setUsers(transformed);
-  }, []);
+  }, [usersData]);
 
   const handleNext = () => {
     if (visibleRange[1] < dates.length) {
@@ -180,7 +136,6 @@ export function Journal(): JSX.Element {
           Вперед
         </Button>
       </div>
-
       <TableContainer component={Paper} className="shadow-md">
         <Table>
           <TableHead>
@@ -219,6 +174,22 @@ export function Journal(): JSX.Element {
                           onChange={(e) =>
                             handleChange(rowIndex, date, e.target.value)
                           }
+                          onBlur={() => {
+                            const cellKey = `${rowIndex}-${date}`;
+                            const gradeValue = user.scores[date];
+                            if (gradeValue !== '' && !sentGrades[cellKey]) {
+                              createGrade({
+                                grade: gradeValue,
+                                date,
+                                user: user.id,
+                                subject: subjectId,
+                              });
+                              setSentGrades((prev) => ({
+                                ...prev,
+                                [cellKey]: true,
+                              }));
+                            }
+                          }}
                           inputRef={(el) => (inputRefs.current[cellKey] = el)}
                           onKeyDown={(e) =>
                             handleKeyDown(e, rowIndex, colIndex)

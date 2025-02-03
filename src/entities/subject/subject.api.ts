@@ -17,14 +17,19 @@ export function getGroups() {
 }
 
 export function getGrades({ queryKey }) {
-  const [, courseId, groupId] = queryKey; // Получаем параметры из queryKey
+  const [, courseId, groupId] = queryKey; 
   return $api.get('/mentor-grades/', {
-    params: { groupId, subjectId: courseId }, // Передаем правильные параметры
+    params: { groupId, subjectId: courseId }, 
   });
 }
 
-export function createGrades() {
-  return $api.post('/mentor-grades/');
+export function createGrades(grade: number, date: string, user: number, subject: number) {
+  return $api.post('/mentor-grades/', {
+    grade,
+    date,
+    user,
+    subject,
+  });
 }
 
 export function editGrades(id: number) {

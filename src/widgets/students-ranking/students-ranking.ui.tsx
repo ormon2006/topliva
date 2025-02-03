@@ -44,6 +44,8 @@ export function StudentsRanking({ isTopThree }: { isTopThree?: boolean }) {
     return <div>Error fetching user data.</div>;
   }
 
+
+  
   const studentRankings = transformStudentData(studentsRanking.data);
 
   const filteredStudents = studentRankings.filter((student) =>

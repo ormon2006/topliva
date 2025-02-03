@@ -17,7 +17,7 @@ export function GradePage() {
   return (
     <div>
       <Title>Оценки</Title>
-      <Journal  /> 
+      <Journal subjectId={courseId} usersData={subjectData.data}  /> 
     </div>
   );
 }

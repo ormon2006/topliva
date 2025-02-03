@@ -1,7 +1,8 @@
-import { getGrades, getGroups, getUserSubjects } from './subject.api';
+import { createGrades, getGrades, getGroups, getUserSubjects } from './subject.api';
 import {
   useQuery,
   queryOptions as tsqQueryOptions,
+  useMutation,
 } from '@tanstack/react-query';
 
 const keys = {
@@ -27,8 +28,24 @@ export function useGetGroups() {
 
 export function useGetGrades(courseId, groupId) {
   return useQuery({
-    queryKey: ['grades', courseId, groupId], // Передаем параметры для запроса
+    queryKey: ['grades', courseId, groupId], 
     queryFn: getGrades,
-    enabled: !!courseId && !!groupId, // Запрос отправляется только если параметры существуют
+    enabled: !!courseId && !!groupId,
+  });
+}
+
+export function useCreateGrades() {
+  return useMutation({
+    mutationFn: ({
+      grade,
+      date,
+      user,
+      subject,
+    }: {
+      grade: number;
+      date: string;
+      user: number;
+      subject: number;
+    }) => createGrades(grade, date, user, subject),
   });
 }
