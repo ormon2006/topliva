@@ -51,13 +51,13 @@ export function Navigator() {
         }}
 
       >
-        <BottomNavigationAction   className='min-w-[0] px-0 max-w-[55px]' label="" icon={<HomeRoundedIcon />} />
-        <BottomNavigationAction   className='min-w-[0] px-0 max-w-[55px]' label="" icon={<SchoolIcon />} />
-        <BottomNavigationAction  className='min-w-[0] px-0 max-w-[55px]' 
+        <BottomNavigationAction    label="" icon={<HomeRoundedIcon />} />
+        <BottomNavigationAction label="" icon={<SchoolIcon />} />
+        <BottomNavigationAction  
           label=""
           icon={<BarChartRoundedIcon />}
         />
-        <BottomNavigationAction  className='min-w-[0] px-0 max-w-[55px]'  label="" icon={<EmojiEventsIcon />} />
+        <BottomNavigationAction   label="" icon={<EmojiEventsIcon />} />
 
         <BottomNavigationAction  className='min-w-[0] px-0 max-w-[55px]'  label="" icon={<AccountCircleIcon />} />
       </BottomNavigation>

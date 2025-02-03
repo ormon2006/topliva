@@ -94,14 +94,14 @@ export function BadgesPage() {
     }));
 
   return (
-    <div className='px-5'>
+    <div className='px-5 w-full'>
       <Title>Доска достижений</Title>
       <h5 className="font-bold my-3 text-[20px] text-tundora">
         Редкость достижений:
       </h5>
       <Swiper
       spaceBetween={10}
-      className='max-w-[320px] md:hidden pb-8'
+      className='max-w-full md:hidden pb-8'
       pagination={{
         dynamicBullets: true,
       }}
