@@ -101,7 +101,7 @@ export function BadgesPage() {
       </h5>
       <Swiper
       spaceBetween={10}
-      className='max-w-full md:hidden pb-8'
+      className='max-w-[350px] md:hidden pb-8'
       pagination={{
         dynamicBullets: true,
       }}
