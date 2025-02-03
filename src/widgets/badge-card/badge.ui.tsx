@@ -59,7 +59,7 @@ export function BadgeCard({
 
   return (
     <Card
-      className={`shadow-none border border-alto rounded-lg overflow-hidden max-w-[320px] min-w-[320px] transition duration-300 hover:scale-[1.005]  ${
+      className={`shadow-none rounded-lg min-w-[120px] max-h-[150px] min-h-[150px] max-w-[120px] border border-alto overflow-hidden flex flex-col items-center  transition duration-300   ${
         rarityStyle?.shadowStyle || ''
       }`}
     >
@@ -67,26 +67,19 @@ export function BadgeCard({
         <img
           src={image}
           alt={title}
-          className="w-full h-[200px] object-cover"
+          className="h-[100px] object-cover"
         />
         <Chip
           label={rarity}
-          className={`absolute top-2 left-2 ${
+          className={`absolute bottom-[-5px] text-[10px] left-2 ${
             rarityStyle?.chipStyle || ''
           } font-bold`}
           size="small"
         />
       </Box>
-      <CardContent className="flex flex-col items-center">
-        <Typography variant="h6" className="font-semibold text-center">
+      <CardContent className="flex flex-col items-center p-0 pb-2 mt-2">
+        <Typography className="font-semibold text-[12px] text-center leading-4 mb-2">
           {title}
-        </Typography>
-        <Typography
-          variant="body2"
-          color="textSecondary"
-          className="text-center mt-2"
-        >
-          {description}
         </Typography>
       </CardContent>
     </Card>

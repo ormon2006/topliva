@@ -58,28 +58,31 @@ export function BadgesPage() {
 
   const {
     data: myachievementData,
-    isMyLoading,
-    isMyError,
+    isLoading: isMyLoading,
+    isError: isMyError,
   } = userQueries.useLoginUserQuery();
 
   if (isLoading || isMyLoading) {
     return <div>Loading...</div>;
+  }
+  if (myachievementData.data.role !== 'student') {
+    return <div>Только для студентов</div>;
   }
 
   if (isError || isMyError) {
     return <div>Error fetching user data.</div>;
   }
 
+
   const myAchievementsIds = myachievementData.data.achievements.map(
     (achievement) => achievement.id
   );
 
-  // Фильтрация всех достижений: только недостигнутые
   const filteredAchievements = achievementData.data
     .filter((achievement) => !myAchievementsIds.includes(achievement.id))
     .map((achievement) => ({
       ...achievement,
-      hasAchievement: false, // Устанавливаем статус недостигнутых
+      hasAchievement: false,
     }));
 
   return (
@@ -88,7 +91,7 @@ export function BadgesPage() {
       <h5 className="font-bold my-3 text-[20px] text-tundora">
         Редкость достижений:
       </h5>
-      <div className="flex gap-4 mb-10">
+      <div className="flex flex-col  md:flex-row gap-4 mb-10">
         {rarityColors.map(
           ({ rarity, style, description, probability, difficulty }) => (
             <Tooltip
@@ -115,7 +118,9 @@ export function BadgesPage() {
           )
         )}
       </div>
-      <h5 className="font-bold my-3 text-[20px] text-tundora">Мои достижения:</h5>
+      <h5 className="font-bold my-3 text-[20px] text-tundora">
+        Мои достижения:
+      </h5>
       <div className="flex flex-wrap gap-10 my-5">
         {myachievementData.data.achievements.map((achievement) => (
           <BadgeCard
@@ -127,10 +132,10 @@ export function BadgesPage() {
           />
         ))}
       </div>
-      
-      <h5 className="font-bold my-3 text-[20px] text-tundora">Все достижения:</h5>
-
-      <div className="flex flex-wrap gap-10 my-5">
+      <h5 className="font-bold my-3 text-[20px] text-tundora">
+        Все достижения:
+      </h5>
+      <div className="flex flex-wrap items-center gap-5 my-5">
         {filteredAchievements.map((achievement) => (
           <Box key={achievement.id} className="relative">
             <BadgeCard
@@ -139,11 +144,14 @@ export function BadgesPage() {
               description={achievement.description}
               rarity={achievement.rarity.name}
             />
-            <Box className="absolute top-0 left-0 w-full h-full bg-black/70 rounded-md flex items-center justify-center">
-              <Typography variant="h6" className="text-white font-bold text-2xl">
+            {/* <Box className="absolute top-0 left-0 w-full h-full bg-black/70 rounded-md flex items-center justify-center">
+              <Typography
+                variant="h6"
+                className="text-white font-bold text-sm"
+              >
                 Не достигнуто
               </Typography>
-            </Box>
+            </Box> */}
           </Box>
         ))}
       </div>

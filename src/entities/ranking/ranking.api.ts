@@ -7,3 +7,4 @@ export function getRankingByGroups() {
 export function getRankingByStudents() {
   return $api.get('rating/users/');
 }
+

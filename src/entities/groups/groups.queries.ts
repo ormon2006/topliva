@@ -8,7 +8,7 @@ import {
   registerUserMutation,
   resetPasswordConfirm,
   resetPasswordEmail,
-} from './user.api';
+} from './groups.api';
 import {
   useMutation,
   useQuery,
@@ -20,13 +20,13 @@ import { useNavigate } from 'react-router-dom';
 import { setCookie } from 'typescript-cookie';
 import { toast } from 'react-toastify';
 import { queryClient } from '~shared/lib/react-query/react-query.lib';
-import { UserDtoSchema } from './user.types';
+import { UserDtoSchema } from './groups.types';
 
 const keys = {
   root: () => ['user'],
   getToken: () => [...keys.root(), 'getToken'] as const,
   loginUser: () => [...keys.root(), 'loginUser'] as const,
-  chart:() => [...keys.root(), "chart"] as const,
+  chart: () => [...keys.root(), 'chart'] as const,
   registerUser: () => [...keys.root(), 'registerUser'] as const,
   user: (username: string) => [...keys.root(), 'username', username] as const,
 };
@@ -170,7 +170,9 @@ export function useResetPaswordSendEmail() {
     mutationKey: keys.root(),
     mutationFn: resetPasswordEmail,
     onSuccess: async () => {
-      await toast.success('На вашу почту отправлено сообщение для сброса пароля');
+      await toast.success(
+        'На вашу почту отправлено сообщение для сброса пароля'
+      );
     },
     onError: (error: AxiosErrorType) => {
       if (error.response && error.response.data) {
@@ -212,13 +214,9 @@ export function useGetUserByUsername(username: string) {
   });
 }
 
-
-
 export function useGetUserPerfomanceChart() {
   return useQuery({
     queryKey: keys.chart(),
     queryFn: () => getPerfomanceChart(),
   });
 }
-
-

@@ -7,13 +7,6 @@ import { GoalList } from '~widgets/goal-list';
 import { MakalaList } from '~widgets/makala-list';
 import { StudentsRanking } from '~widgets/students-ranking';
 
-const usersData = {
-  weekly_leaders: [
-    { name: 'Айдар', points: 1500 },
-    { name: 'Камила', points: 1400 },
-    { name: 'Максат', points: 1200 },
-  ],
-};
 
 export function DashboardPage() {
   const {
@@ -44,7 +37,7 @@ export function DashboardPage() {
         <Typography variant="h6" className="font-bold mb-3">
           Лидеры недели
         </Typography>
-        <StudentsRanking />
+        <StudentsRanking  isTopThree/>
       </Paper>
       <BadgeList achievements={userData.data.achievements} />
       <GoalList />

@@ -14,6 +14,8 @@ import { badgesPageRoute } from '~pages/badges';
 import { aboutPageRoute } from '~pages/about';
 import { ProtectedRoute } from '~pages/layout/layout.ui';
 import { getCookie } from 'typescript-cookie';
+import { userProfilePageRoute } from '~pages/user-profile/user-profile.ui';
+import { gradePageRoute } from '~pages/grades';
 
 function BubbleError() {
   const error = useRouteError();
@@ -39,16 +41,14 @@ const router = createBrowserRouter([
               rankingPageRoute,
               coursePageRoute,
               badgesPageRoute,
+              gradePageRoute,
             ],
           },
         ],
       },
       {
         element: <IntroLayout />,
-        children: [
-          authPageRoute,
-          aboutPageRoute,
-        ],
+        children: [authPageRoute, aboutPageRoute, userProfilePageRoute],
       },
     ],
   },

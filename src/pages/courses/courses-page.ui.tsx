@@ -1,3 +1,4 @@
+import { subjectQueries } from '~entities/subject';
 import { Title } from '~shared/ui/title';
 import { CourseCard } from '~widgets/course-card';
 
@@ -17,17 +18,27 @@ const courses = [
 ];
 
 export function CoursesPage() {
+  const {data:coursesData, isLoading, isError} = subjectQueries.useGetSubjects()
+
+  if(isLoading){
+    return <div>Loading</div>
+  }
+  
+  if(isError){
+    return <div>Ошибка загрузки</div>
+  }
+  
   return (
     <div className='w-[90%] mx-auto'>
       <Title>Мои курсы</Title>
       <div className="flex flex-col gap-5 mb-20 mx-auto">
-        {courses.map((course) => (
+        {coursesData?.data?.map((course) => (
           <CourseCard
             key={course.slug}
-            title={course.title}
+            title={course.name}
             description={course.description}
-            image={course.image}
-            slug={course.slug}
+            image={course.photo}
+            id={course.id}
           />
         ))}
       </div>

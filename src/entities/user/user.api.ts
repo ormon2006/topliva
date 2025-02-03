@@ -33,10 +33,6 @@ export function editUserProfile(params: { user: EditUserProfile }) {
   return $api.patch('users/me/', params.user);
 }
 
-export function getUserByUsername(username: string) {
-  return axios.get(`${API}/${username}/`);
-}
-
 export function resetPasswordEmail(params: { email: SendEmail }) {
   return axios.post(`${API}/reset_password/`, params.email);
 }
@@ -47,4 +43,9 @@ export function resetPasswordConfirm(params: { data: UpdatePassword }) {
 
 export function getPerfomanceChart() {
   return $api.get('perfomance-chart/me');
+}
+
+
+export function getUserByUsername(username:string){
+  return axios.get(`https://api.bilim-track.makalabox.com/api/users/${username}/`)
 }

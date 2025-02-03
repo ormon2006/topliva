@@ -4,6 +4,6 @@ import { pathKeys } from '../../shared/lib/react-router';
 import { CoursePage } from './course-page.ui';
 
 export const coursePageRoute: RouteObject = {
-  path: "courses/:slug",
+  path: "courses/:id",
   element: createElement(CoursePage),
 };

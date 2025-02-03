@@ -11,8 +11,8 @@ type Student = {
 
 const initialData: Student[] = [
   { name: 'Иван Иванов', '01.12': 85, '02.12': 90 },
-  { name: 'Петр Петров', '01.12': 88, '02.12': 92 },
-  { name: 'Сергей Сергеев', '01.12': 70, '02.12': 80 },
+  // { name: 'Петр Петров', '01.12': 88, '02.12': 92 },
+  // { name: 'Сергей Сергеев', '01.12': 70, '02.12': 80 },
 ];
 
 export function Table(): JSX.Element {
@@ -45,7 +45,7 @@ export function Table(): JSX.Element {
 
   return (
     <div className="container mx-auto ">
-      <h1 className="text-xl font-bold mb-4">Таблица с баллами</h1>
+      <h1 className="text-xl font-bold mb-4">Мои оценки</h1>
       <div className='text-[15px] font-semibold'>
       <HotTable
         data={data}

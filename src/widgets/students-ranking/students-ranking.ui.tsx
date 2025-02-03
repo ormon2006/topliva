@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import {
   Table,
   TableBody,
@@ -7,12 +8,18 @@ import {
   TableRow,
   Paper,
   Avatar,
+  TextField,
+  Pagination,
 } from '@mui/material';
-
 import { Link } from 'react-router-dom';
 import { rankingQueries } from '~entities/ranking';
 
-export function StudentsRanking() {
+
+export function StudentsRanking({ isTopThree }: { isTopThree?: boolean }) {
+  const [page, setPage] = useState(0);
+  const [rowsPerPage] = useState(30);
+  const [searchQuery, setSearchQuery] = useState('');
+
   const transformStudentData = (data: any[]) => {
     return data.map((student, index) => ({
       rank: index + 1,
@@ -23,7 +30,6 @@ export function StudentsRanking() {
     }));
   };
 
-  // Пример использования
   const {
     data: studentsRanking,
     isLoading,
@@ -40,12 +46,33 @@ export function StudentsRanking() {
 
   const studentRankings = transformStudentData(studentsRanking.data);
 
+  const filteredStudents = studentRankings.filter((student) =>
+    student.username.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const displayedStudents = isTopThree
+    ? filteredStudents.slice(0, 3)
+    : filteredStudents.slice(
+        page * rowsPerPage,
+        page * rowsPerPage + rowsPerPage
+      );
+
+  const handleChangePage = (
+    _event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
+    setPage(newPage);
+  };
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+    setPage(0);
+  };
+
   const getMedalStyle = (rank: number) => {
     switch (rank) {
       case 1:
-        return 'font-bold';
       case 2:
-        return 'font-bold';
       case 3:
         return 'font-bold';
       default:
@@ -67,51 +94,62 @@ export function StudentsRanking() {
   };
 
   return (
-    <TableContainer
-      component={Paper}
-      className="shadow-none border border-alto md:overflow-x-hidden md:max-w-full overflow-x-auto max-w-[350px] "
-    >
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Место</TableCell>
-            <TableCell>Студент</TableCell>
-            <TableCell align="right">Баллы</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {studentRankings.map((student) => (
-            <TableRow key={student.rank} style={{ height: '64px' }}>
-              <TableCell align="center" style={{ width: '50px' }}>
-                {student.rank <= 3 ? (
-                  <div className="relative">
-                    <img
-                      src={`/medal_${student.rank}.svg`}
-                      alt={`Медаль за ${student.rank} место`}
-                      className="w-15 h-15 max-w-15 min-w-15 max-h-15 min-h-15"
-                    />
-                    <div
-                      className={`w-[18px] h-[18px] text-tundora absolute top-[13%] left-[30%] text-[12px] rounded-full font-bold flex justify-center items-center ${getBackgroundColor(
-                        student.rank
-                      )}`}
+    <div className="flex flex-col gap-4">
+      {!isTopThree && (
+        <TextField
+          label="Поиск по username"
+          variant="outlined"
+          value={searchQuery}
+          onChange={handleSearch}
+          className="w-full max-w-md self-center"
+          size="small"
+        />
+      )}
+
+      <TableContainer
+        component={Paper}
+        className="shadow-none border border-alto md:overflow-x-hidden md:max-w-full overflow-x-auto max-w-[350px]"
+      >
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Место</TableCell>
+              <TableCell>Студент</TableCell>
+              <TableCell align="right">Баллы</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {displayedStudents.map((student) => (
+              <TableRow key={student.rank} style={{ height: '64px' }}>
+                <TableCell align="center" style={{ width: '50px' }}>
+                  {student.rank <= 3 ? (
+                    <div className="relative">
+                      <img
+                        src={`/medal_${student.rank}.svg`}
+                        alt={`Медаль за ${student.rank} место`}
+                        className="w-15 h-15 max-w-15 min-w-15 max-h-15 min-h-15"
+                      />
+                      <div
+                        className={`w-[18px] h-[18px] text-tundora absolute top-[13%] left-[30%] text-[12px] rounded-full font-bold flex justify-center items-center ${getBackgroundColor(
+                          student.rank
+                        )}`}
+                      >
+                        {student.rank}
+                      </div>
+                    </div>
+                  ) : (
+                    <span
+                      style={{
+                        fontSize: '12px',
+                        lineHeight: '64px',
+                        fontWeight: 'bold',
+                      }}
                     >
                       {student.rank}
-                    </div>
-                  </div>
-                ) : (
-                  <span
-                    style={{
-                      fontSize: '12px',
-                      lineHeight: '64px',
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    {student.rank}
-                  </span>
-                )}
-              </TableCell>
-              <TableCell>
-                {student.rank <= 3 ? (
+                    </span>
+                  )}
+                </TableCell>
+                <TableCell>
                   <div
                     className="flex items-center space-x-2"
                     style={{ display: 'flex', alignItems: 'center' }}
@@ -129,31 +167,29 @@ export function StudentsRanking() {
                       </Link>
                     </div>
                   </div>
-                ) : (
-                  <div
-                    className="flex items-center space-x-2"
-                    style={{ display: 'flex', alignItems: 'center' }}
-                  >
-                    <Avatar src={student.avatar} alt={student.name} />
-                    <div className="flex flex-col">
-                      <span>{student.name}</span>
-                      <Link
-                        to="/"
-                        className="font-semibold text-[13px] text-dove hover:underline hover:cursor-pointer"
-                      >
-                        @{student.username}
-                      </Link>
-                    </div>
-                  </div>
-                )}
-              </TableCell>
-              <TableCell align="right" className="font-bold text-tundora">
-                {student.points}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+                </TableCell>
+                <TableCell align="right" className="font-bold text-tundora">
+                  {student.points}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      {!isTopThree && (
+        <Pagination
+          count={10}
+          page={page + 1}
+          onChange={(event, value) => setPage(value - 1)}
+          color="primary"
+          className="flex justify-center w-full max-w-[300px] sm:max-w-[400px] md:max-w-[500px] mx-auto"
+          size="medium" 
+          siblingCount={1}
+          boundaryCount={1}
+          showFirstButton
+          showLastButton
+        />
+      )}
+    </div>
   );
 }
