@@ -1,15 +1,20 @@
-import { createGrades, getGrades, getGroups, getUserSubjects } from './subject.api';
 import {
-  useQuery,
-  queryOptions as tsqQueryOptions,
-  useMutation,
-} from '@tanstack/react-query';
+  createGrades,
+  editGrades,
+  getGrades,
+  getGroups,
+  getUserSubjects,
+} from './subject.api';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 const keys = {
-  root: () => ['subjects'],
-  subject: () => [...keys.root(), 'subject'] as const,
+  subjects: () => ['subjects'] as const,
+  subject: () => [...keys.subjects(), 'subject'] as const,
   groups: () => ['mentorGroups'] as const,
-  grades: () => ['mentiorGrades'] as const,
+  grades: (courseId?: number, groupId?: number) =>
+    courseId && groupId
+      ? (['grades', courseId, groupId] as const)
+      : (['grades'] as const),
 };
 
 export function useGetSubjects() {
@@ -26,15 +31,17 @@ export function useGetGroups() {
   });
 }
 
-export function useGetGrades(courseId, groupId) {
+export function useGetGrades(courseId: number, groupId: number) {
   return useQuery({
-    queryKey: ['grades', courseId, groupId], 
+    queryKey: keys.grades(courseId, groupId),
     queryFn: getGrades,
     enabled: !!courseId && !!groupId,
   });
 }
 
 export function useCreateGrades() {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: ({
       grade,
@@ -47,5 +54,31 @@ export function useCreateGrades() {
       user: number;
       subject: number;
     }) => createGrades(grade, date, user, subject),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: keys.grades() });
+    },
+  });
+}
+
+export function useEditGrades() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      id,
+      grade,
+      date,
+      user,
+      subject,
+    }: {
+      id: number;
+      grade: number;
+      date: string;
+      user: string;
+      subject: number;
+    }) => editGrades(id, grade, date, user, subject),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: keys.grades() });
+    },
   });
 }

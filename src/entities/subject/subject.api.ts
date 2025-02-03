@@ -17,13 +17,18 @@ export function getGroups() {
 }
 
 export function getGrades({ queryKey }) {
-  const [, courseId, groupId] = queryKey; 
+  const [, courseId, groupId] = queryKey;
   return $api.get('/mentor-grades/', {
-    params: { groupId, subjectId: courseId }, 
+    params: { groupId, subjectId: courseId },
   });
 }
 
-export function createGrades(grade: number, date: string, user: number, subject: number) {
+export function createGrades(
+  grade: number,
+  date: string,
+  user: number,
+  subject: number
+) {
   return $api.post('/mentor-grades/', {
     grade,
     date,
@@ -32,6 +37,17 @@ export function createGrades(grade: number, date: string, user: number, subject:
   });
 }
 
-export function editGrades(id: number) {
-  return $api.patch(`/mentor-grades/${id}`);
+export function editGrades(
+  id: number,
+  grade: number,
+  date: string,
+  user: string,
+  subject: number
+) {
+  return $api.put(`/mentor-grades/${id}/`, {
+    grade,
+    date,
+    user,
+    subject,
+  });
 }

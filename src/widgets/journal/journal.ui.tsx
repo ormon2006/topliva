@@ -9,6 +9,7 @@ import {
   Paper,
   Button,
   TextField,
+  CircularProgress,
 } from '@mui/material';
 import { useCreateGrades } from '~entities/subject/subject.queries';
 
@@ -19,8 +20,10 @@ export function Journal({ usersData, subjectId }): JSX.Element {
   const [selectedCell, setSelectedCell] = useState({ row: 0, col: 0 });
   const inputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
   const [sentGrades, setSentGrades] = useState<{ [key: string]: boolean }>({});
+  const [loadingCells, setLoadingCells] = useState<{ [key: string]: boolean }>({});
 
-  const { mutate: createGrade } = useCreateGrades();
+
+  const { mutate: createGrade,  isPending } = useCreateGrades();
 
   useEffect(() => {
     const allDates = new Set<string>();
@@ -75,6 +78,8 @@ export function Journal({ usersData, subjectId }): JSX.Element {
     });
   };
 
+
+  
   const handleKeyDown = (e: React.KeyboardEvent, row: number, col: number) => {
     let newRow = row;
     let newCol = col;
@@ -168,37 +173,47 @@ export function Journal({ usersData, subjectId }): JSX.Element {
                     const cellKey = `${rowIndex}-${date}`;
                     return (
                       <TableCell key={date} className="text-center">
-                        <TextField
-                          variant="standard"
-                          value={user.scores[date] ?? ''}
-                          onChange={(e) =>
-                            handleChange(rowIndex, date, e.target.value)
-                          }
-                          onBlur={() => {
-                            const cellKey = `${rowIndex}-${date}`;
-                            const gradeValue = user.scores[date];
-                            if (gradeValue !== '' && !sentGrades[cellKey]) {
-                              createGrade({
-                                grade: gradeValue,
-                                date,
-                                user: user.id,
-                                subject: subjectId,
-                              });
-                              setSentGrades((prev) => ({
-                                ...prev,
-                                [cellKey]: true,
-                              }));
+                        {loadingCells[cellKey] ? (
+                          <CircularProgress size={20} />
+                        ) : (
+                          <TextField
+                            variant="standard"
+                            value={user.scores[date] ?? ''}
+                            onChange={(e) =>
+                              handleChange(rowIndex, date, e.target.value)
                             }
-                          }}
-                          inputRef={(el) => (inputRefs.current[cellKey] = el)}
-                          onKeyDown={(e) =>
-                            handleKeyDown(e, rowIndex, colIndex)
-                          }
-                          autoComplete="off"
-                          inputProps={{
-                            style: { textAlign: 'center', fontSize: '14px' },
-                          }}
-                        />
+                            onBlur={() => {
+                              const cellKey = `${rowIndex}-${date}`;
+                              const gradeValue = user.scores[date];
+                            
+                              if (gradeValue !== '' && !sentGrades[cellKey]) {
+                                setLoadingCells((prev) => ({ ...prev, [cellKey]: true }));
+                            
+                                createGrade(
+                                  { grade: gradeValue, date, user: user.id, subject: subjectId },
+                                  {
+                                    onSuccess: () => {
+                                      setSentGrades((prev) => ({ ...prev, [cellKey]: true }));
+                                      setLoadingCells((prev) => ({ ...prev, [cellKey]: false }));
+                                    },
+                                    onError: () => {
+                                      setLoadingCells((prev) => ({ ...prev, [cellKey]: false }));
+                                    },
+                                  }
+                                );
+                              }
+                            }}
+                            
+                            inputRef={(el) => (inputRefs.current[cellKey] = el)}
+                            onKeyDown={(e) =>
+                              handleKeyDown(e, rowIndex, colIndex)
+                            }
+                            autoComplete="off"
+                            inputProps={{
+                              style: { textAlign: 'center', fontSize: '14px' },
+                            }}
+                          />
+                        )}
                       </TableCell>
                     );
                   })}

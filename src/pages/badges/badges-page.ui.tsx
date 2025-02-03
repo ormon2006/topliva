@@ -3,6 +3,15 @@ import { achievementsQueries } from '~entities/achievements';
 import { Title } from '~shared/ui/title';
 import { BadgeCard } from '~widgets/badge-card';
 import { userQueries } from '~entities/user';
+import { Pagination } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+
+import 'swiper/css';
+import 'swiper/css/pagination';
+
+
+
 
 const rarityColors = [
   {
@@ -73,7 +82,6 @@ export function BadgesPage() {
     return <div>Error fetching user data.</div>;
   }
 
-
   const myAchievementsIds = myachievementData.data.achievements.map(
     (achievement) => achievement.id
   );
@@ -86,12 +94,51 @@ export function BadgesPage() {
     }));
 
   return (
-    <>
+    <div className='px-5'>
       <Title>Доска достижений</Title>
       <h5 className="font-bold my-3 text-[20px] text-tundora">
         Редкость достижений:
       </h5>
-      <div className="flex flex-col  md:flex-row gap-4 mb-10">
+      <Swiper
+      spaceBetween={10}
+      className='max-w-[320px] md:hidden pb-8'
+      pagination={{
+        dynamicBullets: true,
+      }}
+      modules={[Pagination]}
+        slidesPerView={2}
+        onSlideChange={() => console.log('slide change')}
+        onSwiper={(swiper) => console.log(swiper)}
+      >
+        {rarityColors.map(
+          ({ rarity, style, description, probability, difficulty }) => (
+            <SwiperSlide>
+              <Tooltip
+                key={rarity}
+                title={
+                  <Box>
+                    <Typography variant="body2">
+                      <strong>Описание:</strong> {description}
+                    </Typography>
+                    <Typography variant="body2">
+                      <strong>Вероятность:</strong> {probability}
+                    </Typography>
+                    <Typography variant="body2">
+                      <strong>Сложность:</strong> {difficulty}
+                    </Typography>
+                  </Box>
+                }
+              >
+                <Chip
+                  label={rarity}
+                  className={`${style} w-[320px] font-bold px-2 transition duration-300 hover:cursor-pointer  hover:shadow-xl hover:scale-95`}
+                />
+              </Tooltip>
+            </SwiperSlide>
+          )
+        )}
+      </Swiper>
+      <div className="md:flex flex-col md:flex-row gap-4 mb-10 hidden ">
         {rarityColors.map(
           ({ rarity, style, description, probability, difficulty }) => (
             <Tooltip
@@ -144,17 +191,14 @@ export function BadgesPage() {
               description={achievement.description}
               rarity={achievement.rarity.name}
             />
-            {/* <Box className="absolute top-0 left-0 w-full h-full bg-black/70 rounded-md flex items-center justify-center">
-              <Typography
-                variant="h6"
-                className="text-white font-bold text-sm"
-              >
+            <Box className="absolute top-0 left-0 w-full h-full bg-black/70 rounded-md flex items-center justify-center">
+              <Typography variant="h6" className="text-white font-bold text-sm">
                 Не достигнуто
               </Typography>
-            </Box> */}
+            </Box>
           </Box>
         ))}
       </div>
-    </>
+    </div>
   );
 }

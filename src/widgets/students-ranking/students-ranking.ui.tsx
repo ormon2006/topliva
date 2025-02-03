@@ -25,7 +25,7 @@ export function StudentsRanking({ isTopThree }: { isTopThree?: boolean }) {
       rank: index + 1,
       name: `${student.lastName} ${student.firstName}`,
       points: student.points,
-      avatar: student.photo || 'https://via.placeholder.com/40',
+      photo: student.photo || 'https://via.placeholder.com/40',
       username: student.username,
     }));
   };
@@ -36,6 +36,7 @@ export function StudentsRanking({ isTopThree }: { isTopThree?: boolean }) {
     isError,
   } = rankingQueries.useGetRankingByStudents();
 
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -43,11 +44,9 @@ export function StudentsRanking({ isTopThree }: { isTopThree?: boolean }) {
   if (isError) {
     return <div>Error fetching user data.</div>;
   }
-
-
-  
   const studentRankings = transformStudentData(studentsRanking.data);
 
+  
   const filteredStudents = studentRankings.filter((student) =>
     student.username.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -110,7 +109,7 @@ export function StudentsRanking({ isTopThree }: { isTopThree?: boolean }) {
 
       <TableContainer
         component={Paper}
-        className="shadow-none border border-alto md:overflow-x-hidden md:max-w-full overflow-x-auto max-w-[350px]"
+        className="shadow-none border border-alto md:overflow-x-hidden md:max-w-full overflow-x-auto max-w-full"
       >
         <Table>
           <TableHead>
@@ -156,13 +155,13 @@ export function StudentsRanking({ isTopThree }: { isTopThree?: boolean }) {
                     className="flex items-center space-x-2"
                     style={{ display: 'flex', alignItems: 'center' }}
                   >
-                    <Avatar src={student.avatar} alt={student.name} />
+                    <Avatar src={`https://api.bilim-track.makalabox.com/${student.photo}`} alt={student.name} />
                     <div className="flex flex-col">
-                      <span className={`${getMedalStyle(student.rank)}`}>
+                      <p className={`${getMedalStyle(student.rank)} `}>
                         {student.name}
-                      </span>
+                      </p>
                       <Link
-                        to="/"
+                        to={`/${student.username}`}
                         className="font-semibold text-[13px] text-dove hover:underline hover:cursor-pointer"
                       >
                         @{student.username}

@@ -8,7 +8,7 @@ import WidgetsIcon from "@mui/icons-material/Widgets";
 
 export function Footer() {
   return (
-    <Box component="footer" className="bg-tundora text-white py-6 px-40">
+    <Box component="footer" className="bg-tundora text-white py-6 md:px-40 px-10">
       <div className="container mx-auto px-4 pb-7 flex flex-col sm:flex-row items-center justify-around">
         <Link to={pathKeys.home()} className="flex items-center mb-4 sm:mb-0">
           <SchoolIcon />
