@@ -7,7 +7,6 @@ import { GoalList } from '~widgets/goal-list';
 import { MakalaList } from '~widgets/makala-list';
 import { StudentsRanking } from '~widgets/students-ranking';
 
-
 export function DashboardPage() {
   const {
     data: userData,
@@ -29,19 +28,27 @@ export function DashboardPage() {
         <Typography variant="h5" className="font-bold">
           Добро пожаловать, {userData.data.firstName}!
         </Typography>
-        <Typography variant="body1">
-          Группа: {userData.data.group} • Баллы: {userData.data.points}
-        </Typography>
+        {userData.data.role === 'student' ? (
+          <Typography variant="body1">
+            Группа: {userData.data.group} • Баллы: {userData.data.points}
+          </Typography>
+        ) : (
+          null
+        )}
       </Paper>
-      <Paper elevation={3} className="p-5 shadow-none border border-alto">
-        <Typography variant="h6" className="font-bold mb-3">
-          Лидеры недели
-        </Typography>
-        <StudentsRanking  isTopThree/>
-      </Paper>
-      <BadgeList achievements={userData.data.achievements} />
-      <GoalList />
-      <MakalaList />
+      {userData.data.role === 'student' ? (
+        <>
+          <Paper elevation={3} className="p-5 shadow-none border border-alto">
+            <Typography variant="h6" className="font-bold mb-3">
+              Лидеры недели
+            </Typography>
+            <StudentsRanking isTopThree />
+          </Paper>
+          <BadgeList achievements={userData.data.achievements} />
+          <GoalList />
+          <MakalaList />
+        </>
+      ) : null}
     </div>
   );
 }

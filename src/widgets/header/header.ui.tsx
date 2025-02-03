@@ -9,7 +9,7 @@ import EmojiEventsRoundedIcon from '@mui/icons-material/EmojiEventsRounded';
 export function Header() {
   
   return (  
-    <AppBar position="static" className="bg-white shadow  flex justify-between font-medium md:px-40 px-10">
+    <AppBar position="static" className="bg-white shadow  flex justify-between font-medium md:px-40 px-5">
       <Toolbar className="flex justify-between w-full">
         <Link to={pathKeys.home()} className="flex items-center gap-1">
           <SchoolIcon className="text-tundora duration-500 hover:rotate-180" />
