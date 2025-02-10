@@ -67,16 +67,11 @@ export function useEditGrades() {
     mutationFn: ({
       id,
       grade,
-      date,
-      user,
-      subject,
+
     }: {
       id: number;
       grade: number;
-      date: string;
-      user: string;
-      subject: number;
-    }) => editGrades(id, grade, date, user, subject),
+    }) => editGrades(id, grade),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: keys.grades() });
     },

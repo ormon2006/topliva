@@ -37,17 +37,8 @@ export function createGrades(
   });
 }
 
-export function editGrades(
-  id: number,
-  grade: number,
-  date: string,
-  user: string,
-  subject: number
-) {
-  return $api.put(`/mentor-grades/${id}/`, {
+export function editGrades(id: number, grade: number) {
+  return $api.patch(`/mentor-grades/${id}/`, {
     grade,
-    date,
-    user,
-    subject,
   });
 }

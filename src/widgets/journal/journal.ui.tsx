@@ -11,212 +11,112 @@ import {
   TextField,
   CircularProgress,
 } from '@mui/material';
-import { useCreateGrades } from '~entities/subject/subject.queries';
+import {
+  useCreateGrades,
+  useEditGrades,
+} from '~entities/subject/subject.queries';
+import debounce from 'lodash.debounce';
 
-export function Journal({ usersData, subjectId }): JSX.Element {
-  const [dates, setDates] = useState<string[]>([]);
-  const [users, setUsers] = useState<any[]>([]);
+export function Journal({ usersData, subjectId }) {
+  const [dates, setDates] = useState([]);
+  const [users, setUsers] = useState([]);
   const [visibleRange, setVisibleRange] = useState([0, 4]);
-  const [selectedCell, setSelectedCell] = useState({ row: 0, col: 0 });
-  const inputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
-  const [sentGrades, setSentGrades] = useState<{ [key: string]: boolean }>({});
-  const [loadingCells, setLoadingCells] = useState<{ [key: string]: boolean }>({});
-
-
-  const { mutate: createGrade,  isPending } = useCreateGrades();
+  const [loadingCells, setLoadingCells] = useState({});
+  const inputRefs = useRef({});
+  const { mutate: createGrade } = useCreateGrades();
+  const { mutate: editGrades } = useEditGrades();
 
   useEffect(() => {
-    const allDates = new Set<string>();
-    usersData.forEach((user) =>
-      user.scores.forEach((score) => allDates.add(score.date))
+    const allDates = new Set(usersData.flatMap((user) => user.scores.map((s) => s.date)));
+    allDates.add(new Date().toISOString().split('T')[0]);
+    setDates([...allDates].sort());
+
+    setUsers(
+      usersData.map((user) => ({
+        id: user.user.id,
+        fullName: `${user.user.fullName?.trim() || 'Неизвестно'} (${user.user.username})`,
+        scores: user.scores.reduce((acc, score) => ({ ...acc, [score.date]: { id: score.id, grade: score.grade } }), {}),
+      }))
     );
-
-    const today = new Date().toISOString().split('T')[0];
-    allDates.add(today);
-
-    const sortedDates = Array.from(allDates).sort();
-    setDates(sortedDates);
-
-    const transformed = usersData.map((entry) => {
-      const scoresMap = entry.scores.reduce(
-        (acc, score) => ({ ...acc, [score.date]: score.grade }),
-        {}
-      );
-
-      return {
-        id: entry.user.id,
-        fullName: `${entry.user.fullName?.trim() || 'Неизвестно'} (${
-          entry.user.username
-        })`,
-        scores: scoresMap,
-      };
-    });
-
-    setUsers(transformed);
   }, [usersData]);
 
-  const handleNext = () => {
-    if (visibleRange[1] < dates.length) {
-      setVisibleRange([visibleRange[0] + 1, visibleRange[1] + 1]);
-    }
-  };
+  const updateGrade = debounce((userId, date, grade, gradeId) => {
+    setLoadingCells((prev) => ({ ...prev, [`${userId}-${date}`]: true }));
+    const mutation = gradeId ? editGrades : createGrade;
+    const payload = gradeId ? { id: gradeId, grade } : { grade, date, user: userId, subject: subjectId };
 
-  const handlePrev = () => {
-    if (visibleRange[0] > 0) {
-      setVisibleRange([visibleRange[0] - 1, visibleRange[1] - 1]);
-    }
-  };
-
-  const handleChange = (index: number, date: string, value: string) => {
-    setUsers((prevUsers) => {
-      const newUsers = [...prevUsers];
-      const newValue = value === '' ? '' : parseInt(value, 10);
-      if (!isNaN(newValue) || value === '') {
-        newUsers[index].scores[date] = newValue;
-      }
-      return newUsers;
-    });
-  };
-
-
-  
-  const handleKeyDown = (e: React.KeyboardEvent, row: number, col: number) => {
-    let newRow = row;
-    let newCol = col;
-
-    switch (e.key) {
-      case 'ArrowRight':
-        newCol = Math.min(
-          col + 1,
-          dates.slice(visibleRange[0], visibleRange[1]).length - 1
+    mutation(payload, {
+      onSuccess: (data) => {
+        setUsers((prevUsers) =>
+          prevUsers.map((user) =>
+            user.id === userId
+              ? { ...user, scores: { ...user.scores, [date]: { id: data?.id || gradeId, grade } } }
+              : user
+          )
         );
-        break;
-      case 'ArrowLeft':
-        newCol = Math.max(col - 1, 0);
-        break;
-      case 'ArrowDown':
-        newRow = Math.min(row + 1, users.length - 1);
-        break;
-      case 'ArrowUp':
-        newRow = Math.max(row - 1, 0);
-        break;
-      case 'Enter':
-      case 'Tab':
-        newCol++;
-        if (newCol >= dates.slice(visibleRange[0], visibleRange[1]).length) {
-          newCol = 0;
-          newRow++;
-          if (newRow >= users.length) newRow = 0;
-        }
-        break;
-      default:
-        return;
-    }
+        setLoadingCells((prev) => ({ ...prev, [`${userId}-${date}`]: false }));
+      },
+      onError: () => {
+        setLoadingCells((prev) => ({ ...prev, [`${userId}-${date}`]: false }));
+      },
+    });
+  }, 500);
 
-    e.preventDefault();
-    setSelectedCell({ row: newRow, col: newCol });
+  const handleChange = (userId, date, value) => {
+    const grade = value === '' ? null : parseInt(value, 10);
+    if (isNaN(grade) && value !== '') return;
+    setUsers((prevUsers) =>
+      prevUsers.map((user) =>
+        user.id === userId ? { ...user, scores: { ...user.scores, [date]: { id: user.scores[date]?.id, grade } } } : user
+      )
+    );
+  };
 
-    const nextCellKey = `${newRow}-${dates[visibleRange[0] + newCol]}`;
-    setTimeout(() => {
-      inputRefs.current[nextCellKey]?.focus();
-      inputRefs.current[nextCellKey]?.select();
-    }, 10);
+  const handleBlur = (userId, date) => {
+    const { id: gradeId, grade } = users.find((user) => user.id === userId)?.scores[date] || {};
+    updateGrade(userId, date, grade, gradeId);
   };
 
   return (
     <div className="w-full mx-auto mt-4">
       <div className="flex justify-between mb-2">
-        <Button
-          variant="contained"
-          onClick={handlePrev}
-          disabled={visibleRange[0] === 0}
-        >
-          Назад
-        </Button>
-        <Button
-          variant="contained"
-          onClick={handleNext}
-          disabled={visibleRange[1] >= dates.length}
-        >
-          Вперед
-        </Button>
+        <Button variant="contained" onClick={() => setVisibleRange(([start, end]) => [start - 1, end - 1])} disabled={visibleRange[0] === 0}>Назад</Button>
+        <Button variant="contained" onClick={() => setVisibleRange(([start, end]) => [start + 1, end + 1])} disabled={visibleRange[1] >= dates.length}>Вперед</Button>
       </div>
       <TableContainer component={Paper} className="shadow-md">
         <Table>
           <TableHead>
             <TableRow className="bg-gray-200">
-              <TableCell
-                className="font-bold text-center sticky left-0 bg-gray-200 z-10"
-                style={{ minWidth: '200px' }}
-              >
-                ФИО (Логин)
-              </TableCell>
+              <TableCell className="font-bold text-center sticky left-0 bg-gray-200 z-10" style={{ minWidth: '200px' }}>ФИО (Логин)</TableCell>
               {dates.slice(visibleRange[0], visibleRange[1]).map((date) => (
-                <TableCell key={date} className="font-bold text-center">
-                  {date}
-                </TableCell>
+                <TableCell key={date} className="font-bold text-center">{date}</TableCell>
               ))}
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.map((user, rowIndex) => (
-              <TableRow key={rowIndex} className="hover:bg-gray-100">
-                <TableCell
-                  className="font-semibold sticky left-0 bg-white z-10"
-                  style={{ minWidth: '200px' }}
-                >
-                  {user.fullName}
-                </TableCell>
-                {dates
-                  .slice(visibleRange[0], visibleRange[1])
-                  .map((date, colIndex) => {
-                    const cellKey = `${rowIndex}-${date}`;
-                    return (
-                      <TableCell key={date} className="text-center">
-                        {loadingCells[cellKey] ? (
-                          <CircularProgress size={20} />
-                        ) : (
-                          <TextField
-                            variant="standard"
-                            value={user.scores[date] ?? ''}
-                            onChange={(e) =>
-                              handleChange(rowIndex, date, e.target.value)
-                            }
-                            onBlur={() => {
-                              const cellKey = `${rowIndex}-${date}`;
-                              const gradeValue = user.scores[date];
-                            
-                              if (gradeValue !== '' && !sentGrades[cellKey]) {
-                                setLoadingCells((prev) => ({ ...prev, [cellKey]: true }));
-                            
-                                createGrade(
-                                  { grade: gradeValue, date, user: user.id, subject: subjectId },
-                                  {
-                                    onSuccess: () => {
-                                      setSentGrades((prev) => ({ ...prev, [cellKey]: true }));
-                                      setLoadingCells((prev) => ({ ...prev, [cellKey]: false }));
-                                    },
-                                    onError: () => {
-                                      setLoadingCells((prev) => ({ ...prev, [cellKey]: false }));
-                                    },
-                                  }
-                                );
-                              }
-                            }}
-                            
-                            inputRef={(el) => (inputRefs.current[cellKey] = el)}
-                            onKeyDown={(e) =>
-                              handleKeyDown(e, rowIndex, colIndex)
-                            }
-                            autoComplete="off"
-                            inputProps={{
-                              style: { textAlign: 'center', fontSize: '14px' },
-                            }}
-                          />
-                        )}
-                      </TableCell>
-                    );
-                  })}
+            {users.map((user) => (
+              <TableRow key={user.id} className="hover:bg-gray-100">
+                <TableCell className="font-semibold sticky left-0 bg-white z-10" style={{ minWidth: '200px' }}>{user.fullName}</TableCell>
+                {dates.slice(visibleRange[0], visibleRange[1]).map((date) => {
+                  const cellKey = `${user.id}-${date}`;
+                  return (
+                    <TableCell key={date} className="text-center">
+                      {loadingCells[cellKey] ? (
+                        <CircularProgress size={20} />
+                      ) : (
+                        <TextField
+                          variant="standard"
+                          value={user.scores[date]?.grade ?? ''}
+                          onChange={(e) => handleChange(user.id, date, e.target.value)}
+                          onBlur={() => handleBlur(user.id, date)}
+                          inputRef={(el) => (inputRefs.current[cellKey] = el)}
+                          autoComplete="off"
+                          inputProps={{ style: { textAlign: 'center', fontSize: '14px' } }}
+                        />
+                      )}
+                    </TableCell>
+                  );
+                })}
               </TableRow>
             ))}
           </TableBody>

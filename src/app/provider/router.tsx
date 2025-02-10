@@ -16,6 +16,7 @@ import { ProtectedRoute } from '~pages/layout/layout.ui';
 import { getCookie } from 'typescript-cookie';
 import { userProfilePageRoute } from '~pages/user-profile/user-profile.ui';
 import { gradePageRoute } from '~pages/grades';
+import { tandaPageRoute } from '~pages/tanda';
 
 function BubbleError() {
   const error = useRouteError();
@@ -48,7 +49,12 @@ const router = createBrowserRouter([
       },
       {
         element: <IntroLayout />,
-        children: [authPageRoute, aboutPageRoute, userProfilePageRoute],
+        children: [
+          authPageRoute,
+          aboutPageRoute,
+          userProfilePageRoute,
+          tandaPageRoute,
+        ],
       },
     ],
   },
