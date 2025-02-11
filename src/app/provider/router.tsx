@@ -39,7 +39,6 @@ const router = createBrowserRouter([
               dashboardPageRoute,
               coursesPageRoute,
               profilePageRoute,
-              rankingPageRoute,
               coursePageRoute,
               badgesPageRoute,
               gradePageRoute,
@@ -50,6 +49,7 @@ const router = createBrowserRouter([
       {
         element: <IntroLayout />,
         children: [
+          rankingPageRoute,
           authPageRoute,
           aboutPageRoute,
           userProfilePageRoute,

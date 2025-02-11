@@ -12,7 +12,7 @@ export function RankingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
+    <div className="min-h-screen bg-gray-50 p-4 w-[500px]">
       <Title>Рейтинг и статистика</Title>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={activeTab} onChange={handleTabChange} centered>

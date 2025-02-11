@@ -1,4 +1,4 @@
-import { Navigate, Outlet} from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 import { Footer } from '~widgets/footer';
 import { Header } from '~widgets/header';
 import { Navigator } from '~widgets/navigator';
@@ -18,7 +18,7 @@ export function GenericLayout() {
 
 export function IntroLayout() {
   return (
-    <div className="h-screen flex items-center justify-center">
+    <div className="flex flex-col min-h-screen max-w-[1200px] mx-auto">
       <Outlet />
     </div>
   );
