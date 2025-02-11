@@ -1,1 +1,1 @@
-export { tandaPageRoute } from './tanda.ui';
+export { tandaPageRoute } from './tanda.route';
