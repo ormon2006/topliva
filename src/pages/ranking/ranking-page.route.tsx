@@ -4,6 +4,6 @@ import { RankingPage } from './ranking-page.ui';
 import { pathKeys } from '../../shared/lib/react-router';
 
 export const rankingPageRoute: RouteObject = {
-  path: pathKeys.ranking(),
+  path: pathKeys.ranking(), 
   element: createElement(RankingPage),
 };

@@ -19,6 +19,10 @@ export default {
       tundora: ' #4c4c4c',
       white: 'white',
       black: 'black',
+      tandaBtnBg: '#005B50',
+      tandaColor: '#1F1F1F',
+      tandaTestBg:'rgb(245, 245, 245)',
+      TandaBg:'rgb(255, 255, 255)'
     },
     extend: {},
   },

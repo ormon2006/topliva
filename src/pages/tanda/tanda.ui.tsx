@@ -1,8 +1,13 @@
-import { RouteObject } from 'react-router-dom';
-import { createElement } from 'react';
-import { TandaPage } from './tanda.route';
-
-export const tandaPageRoute: RouteObject = {
-  path: '/tanda/',
-  element: createElement(TandaPage),
+import React from "react";
+import { HomeContent } from "~widgets/tanda-home";
+const TandaPage = () => {
+  return (
+    <>
+      <div className=" min-h-screen  ">
+        <HomeContent />
+      </div>
+    </>
+  );
 };
+
+export default TandaPage;

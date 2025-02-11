@@ -11,7 +11,7 @@ export function GenericLayout() {
         <Outlet />
       </main>
       <Navigator />
-      <Footer />
+      <Footer />  
     </div>
   );
 }
