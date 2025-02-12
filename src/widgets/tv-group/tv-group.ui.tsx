@@ -56,9 +56,9 @@ export function TvGroup() {
       <Table size="large">
         <TableHead>
           <TableRow>
-            <TableCell className="text-2xl p-4 font-bold">Место</TableCell>
-            <TableCell className="text-2xl p-4 font-bold">Группа</TableCell>
-            <TableCell align="right" className="text-2xl p-4 font-bold">
+            <TableCell className="text-4xl p-6 font-bold">Место</TableCell>
+            <TableCell className="text-4xl p-6 font-bold">Группа</TableCell>
+            <TableCell align="right" className="text-xl p-6 font-bold">
               Баллы
             </TableCell>
           </TableRow>
@@ -67,14 +67,14 @@ export function TvGroup() {
           {groupRankings.map((group) => (
             <TableRow
               key={group.rank}
-              className={`${getRowBackground(group.rank)}`}
+              className={`${getRowBackground(group.rank)}  py-5`}
             >
-              <TableCell className="flex items-center space-x-1">
-                <div className="backdrop-blur-xl bg-white/30 rounded-full p-1 flex items-center justify-center">
+              <TableCell className="flex items-center space-x-2">
+                <div className="backdrop-blur-xl bg-white/30 rounded-full text-[35px] font-bold p-2 flex items-center justify-center">
                   {group.rank <= 3 ? (
                     <img
                       src={`/trophy_${group.rank}.svg`}
-                      className="w-14 h-14"
+                      className="w-17 h-[100px]"
                       alt=""
                     />
                   ) : (
@@ -86,12 +86,12 @@ export function TvGroup() {
                 <Chip
                   label={group.group}
                   color="info"
-                  className="text-lg p-2"
+                  className="text-4xl font-bold p-7"
                 />
               </TableCell>
               <TableCell
                 align="right"
-                className="font-bold text-tundora text-xl"
+                className="font-bold text-tundora text-4xl  px-10"
               >
                 {group.points}
               </TableCell>
@@ -102,3 +102,4 @@ export function TvGroup() {
     </TableContainer>
   );
 }
+

@@ -97,17 +97,17 @@ export function TvStudents({ isTopThree }: { isTopThree?: boolean }) {
           </TableHead>
           <TableBody>
             {displayedStudents.map((student) => (
-              <TableRow key={student.rank} style={{ height: '256px' }}>
+              <TableRow key={student.rank} style={{ height: '96px' }}>
                 <TableCell
                   align="center"
-                  style={{ width: '100px', height: '100px' }}
+                  style={{ width: '80px', height: '80px' }}
                 >
                   {student.rank <= 3 ? (
-                    <div className="relative flex justify-center items-center w-40 h-40">
+                    <div className="relative flex justify-center items-center w-40 h-[100px]">
                       <img
                         src={`/medal_${student.rank}.svg`}
                         alt={`Медаль за ${student.rank} место`}
-                        className="w-40 h-40"
+                        className="h-[50px]"
                       />
                       <div
                         className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[40px] h-[40px] text-white text-3xl font-bold rounded-full flex justify-center items-center ${getBackgroundColor(
@@ -123,7 +123,6 @@ export function TvStudents({ isTopThree }: { isTopThree?: boolean }) {
                     </span>
                   )}
                 </TableCell>
-
                 <TableCell>
                   <div
                     className="flex items-center space-x-2"
@@ -132,18 +131,18 @@ export function TvStudents({ isTopThree }: { isTopThree?: boolean }) {
                     <Avatar
                       src={`https://api.bilim-track.makalabox.com/${student.photo}`}
                       alt={student.name}
-                      sx={{ width: 120, height: 120 }}
+                      sx={{ width: 80, height: 80 }}
                     />
 
                     <div className="flex flex-col">
                       <p
-                        className={`${getMedalStyle(student.rank)} text-[45px]`}
+                        className={`${getMedalStyle(student.rank)} text-[35px]`}
                       >
                         {student.name}
                       </p>
                       <Link
                         to={`/${student.username}`}
-                        className="font-semibold text-[35px] text-dove hover:underline hover:cursor-pointer"
+                        className="font-semibold text-[25px] text-dove hover:underline hover:cursor-pointer"
                       >
                         @{student.username}
                       </Link>
