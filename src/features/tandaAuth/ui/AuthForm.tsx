@@ -44,6 +44,8 @@ export const AuthForm = () => {
             className="mb-2 font-[Graphik,sans-serif] font-bold"
             sx={{
               "& .MuiOutlinedInput-root": {
+                fontFamily: "Roboto",
+
                 borderRadius: "4px",
                 "& fieldset": { borderColor: "#000" },
                 "&:hover fieldset": {
@@ -74,6 +76,8 @@ export const AuthForm = () => {
             sx={{
               "& .MuiOutlinedInput-root": {
                 borderRadius: "4px",
+                fontFamily: "Roboto",
+
                 "& fieldset": { borderColor: "#000" },
                 "&:hover fieldset": { borderColor: "#005B50" },
                 "&.Mui-focused fieldset": { borderColor: "#005B50" },
