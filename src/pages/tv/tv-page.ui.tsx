@@ -6,6 +6,9 @@ import { GroupsRanking } from '~widgets/groups-ranking';
 import { rankingQueries } from '~entities/ranking';
 import { userQueries } from '~entities/user';
 import { StudentProfile } from '~widgets/student-profile';
+import { TvGroup } from '~widgets/tv-group';
+import { TvStudents } from '~widgets/tv-students';
+import { TvProfile } from '~widgets/tv-profile';
 
 export function TvPage() {
   const [activeTab, setActiveTab] = useState(0);
@@ -55,10 +58,12 @@ export function TvPage() {
           <Tab label="Топ 1" />
         </Tabs>
       </Box>
-      <Box sx={{ p: 3, width: '100%', display:"flex", justifyContent:"center" }}>
-        {activeTab === 0 && <GroupsRanking />}
-        {activeTab === 1 && <StudentsRanking />}
-        {activeTab === 2 && <StudentProfile userData={userData} />}
+      <Box
+        sx={{ p: 3, width: '100%', display: 'flex', justifyContent: 'center' }}
+      >
+        {activeTab === 0 && <TvGroup/>}
+        {activeTab === 1 && <TvStudents />}
+        {activeTab === 2 && <TvProfile userData={userData} />}
       </Box>
     </div>
   );
