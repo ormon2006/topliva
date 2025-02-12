@@ -77,7 +77,7 @@ export const StudentProfile = ({ userData }) => {
                   }}
                 >
                   <Chip
-                    label={userData.data.achiviementsCount}
+                    label={userData.data.achievementsCount}
                     color="warning"
                     className="text-white font-bold"
                     icon={<WorkspacePremiumIcon />}

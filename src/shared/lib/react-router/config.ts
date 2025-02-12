@@ -12,6 +12,9 @@ export const pathKeys = {
   policy() {
     return pathKeys.root.concat("privacy-policy/");
   },
+  tv() {
+    return pathKeys.root.concat("tv/");
+  },
   login() {
     return pathKeys.root.concat("auth/");
   },

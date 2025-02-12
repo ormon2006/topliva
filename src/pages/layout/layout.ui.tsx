@@ -18,7 +18,7 @@ export function GenericLayout() {
 
 export function IntroLayout() {
   return (
-    <div className="flex flex-col min-h-screen max-w-[1200px] mx-auto">
+    <div className="flex flex-col justify-center items-center min-h-screen max-w-[1200px] mx-auto">
       <Outlet />
     </div>
   );
