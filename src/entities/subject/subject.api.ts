@@ -18,7 +18,7 @@ export function getGroups() {
 
 export function getGrades({ queryKey }) {
   const [, courseId, groupId] = queryKey;
-  return $api.get('/mentor-grades/', {
+  return $api.get('/get-mentor-grades/', {
     params: { groupId, subjectId: courseId },
   });
 }
