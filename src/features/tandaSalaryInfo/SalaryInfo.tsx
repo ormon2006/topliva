@@ -16,20 +16,10 @@ import "swiper/css/pagination";
 
 export const SalaryInfo: FC = () => {
   const swiperRef = useRef<any>(null);
-  const [isAutoplayRunning, setIsAutoplayRunning] = useState(true);
 
-  const toggleAutoplay = () => {
-    if (swiperRef.current?.autoplay.running) {
-      swiperRef.current.autoplay.stop();
-      setIsAutoplayRunning(false);
-    } else {
-      swiperRef.current.autoplay.start();
-      setIsAutoplayRunning(true);
-    }
-  };
 
   return (
-    <section className=" px-4">
+    <section className=" ">
       <div className="container mx-auto">
         <h2 className="text-3xl font-bold text-center mb-8">
           Каталог направлений

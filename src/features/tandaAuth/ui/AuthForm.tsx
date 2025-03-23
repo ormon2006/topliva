@@ -1,7 +1,7 @@
 import { TextField, Button } from "@mui/material";
 import { MuiTelInput } from "mui-tel-input";
-import { useAuthLogic } from "~features/tandaAuth/model/hooks/useAuthLogic";
-
+import { useAuthLogic } from "../model/hooks/useAuthLogic";
+import { getCookie } from "typescript-cookie";
 export const AuthForm = () => {
   const {
     name,
@@ -15,9 +15,10 @@ export const AuthForm = () => {
     handleBlur,
   } = useAuthLogic();
 
+  const isAuth = !!getCookie('access')
   return (
     <div className="p-5 pb-20">
-      <div className="bg-white rounded-[32px] shadow-2xl max-w-[568px] p-12 mx-auto mt-24 md:mt-12 sm:mt-10 xs:mt-4">
+      <div className="bg-white rounded-[32px] shadow-2xl max-w-[568px] p-12 max-[475px]:p-5  mx-auto mt-24 md:mt-12 max-sm:mt-10 max-xs:mt-2">
         <form onSubmit={handleSubmit} className="text-center">
           <h1 className="text-[28px] leading-[32px] font-semibold  font-[Graphik,sans-serif] text-[#4f4f4f]">
             Подобрали подходящие <br /> для вас профессии
@@ -25,7 +26,6 @@ export const AuthForm = () => {
           <p className="text-[#666666] text-base my-[12px] font-medium font-[Graphik,sans-serif]">
             Заполните форму, чтобы узнать результаты
           </p>
-
           <TextField
             style={{
               margin: "8px 0",

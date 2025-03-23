@@ -1,6 +1,7 @@
 import { useEffect, useState, FC } from "react";
 import ReactECharts from "echarts-for-react";
-import { Typography } from "@mui/material";
+import { Typography, LinearProgress, Box } from "@mui/material";
+import { motion } from "framer-motion";
 
 export interface ResultChartProps {
   results: {
@@ -14,7 +15,7 @@ interface ChartData {
 }
 
 export const ResultChart: FC<ResultChartProps> = ({ results }) => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
 
   useEffect(() => {
     let resizeTimeout: number;
@@ -22,7 +23,7 @@ export const ResultChart: FC<ResultChartProps> = ({ results }) => {
     const handleResize = () => {
       clearTimeout(resizeTimeout);
       resizeTimeout = window.setTimeout(() => {
-        setIsMobile(window.innerWidth < 768);
+        setIsMobile(window.innerWidth < 1024);
       }, 200);
     };
 
@@ -75,6 +76,75 @@ export const ResultChart: FC<ResultChartProps> = ({ results }) => {
     return <div>Нет данных для отображения результатов</div>;
   }
 
+  const MobileList = () => (
+    <Box
+      sx={{
+        width: "100%",
+        mt: 3,
+        display: "flex",
+        flexDirection: "column",
+        gap: 2,
+      }}
+    >
+      {data.map((skill, index) => (
+        <motion.div
+          key={index}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: index * 0.1 }}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "15px",
+            padding: "12px 16px",
+            borderRadius: "12px",
+            backgroundColor: "#1E1E1E",
+          }}
+        >
+          <Box
+            sx={{
+              textAlign: "center",
+              bgcolor: "#005B50",
+              color: "rgb(255, 255, 255)",
+              padding: "8px 14px",
+              borderRadius: "32px",
+              fontWeight: 600,
+              fontSize: "16px",
+              minWidth:'108px',
+
+            }}
+          >
+            {skill.value}%
+          </Box>
+
+          <Box sx={{ flex: 1 }}>
+            <Typography
+              variant="body1"
+              sx={{
+                fontSize: "16px",
+                fontWeight: 500,
+                mb: "4px",
+                color: "#E0E0E0",
+              }}
+            >
+              {skill.name}
+            </Typography>
+            <LinearProgress
+              variant="determinate"
+              value={skill.value}
+              sx={{
+                height: "8px",
+                borderRadius: "4px",
+                "& .MuiLinearProgress-bar": {
+                  backgroundColor: "#00cc44",
+                },
+              }}
+            />
+          </Box>
+        </motion.div>
+      ))}
+    </Box>
+  );
   const option = {
     tooltip: {
       trigger: "item" as const,
@@ -143,25 +213,28 @@ export const ResultChart: FC<ResultChartProps> = ({ results }) => {
   };
 
   return (
-    <div>
-      <div className="w-[1000px] box-border m-auto ">
-        <div className="bg-white py-[20px] px-[40px] rounded-[20px]">
-          <Typography variant="h2" className="text-[32px] font-bold">
-            Ваши результаты:
-          </Typography>
-          <div className=" ">
-            <ReactECharts
-              className="max-md:w-[400px] max-md:h-[450px] max-md:relative max-md:bottom-[100px] max-sm:w-[300px]"
-              option={option}
-              style={{
-                height: isMobile ? "300px" : "500px",
-                textAlign: "center",
-                maxWidth: "900px",
-                marginTop: "20px",
-              }}
-            />
-          </div>
-        </div>
+    <div className="  mx-auto px-4">
+      <div className=" mx-auto max-w-[1000px] bg-white py-5 md:py-8 px-4 md:px-8 rounded-3xl shadow-sm">
+        <Typography
+          variant="h2"
+          className="text-2xl md:text-3xl font-bold mb-4"
+        >
+          Ваши результаты:
+        </Typography>
+
+        {isMobile ? (
+          <MobileList />
+        ) : (
+          <ReactECharts
+            option={option}
+            style={{
+              height: "500px",
+              width: "100%",
+              maxWidth: "900px",
+              margin: "0 auto",
+            }}
+          />
+        )}
       </div>
     </div>
   );

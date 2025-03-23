@@ -47,7 +47,7 @@ export const QuestionCard: React.FC<QuestionProps> = ({
         <ProgressBar progress={(currentQuestionIndex + 1) / totalQuestion} />
       </div>
       <div className="bg-white pt-[24px] pr-[48px] pb-[31px] pl-[63px] rounded-[30px] max-md:pr-[20px] max-md:pl-[43px]">
-        <h2 className="text-tandaColor text-[36px] font-medium font-['Roboto'] max-md:text-[32px] ">
+        <h2 className="text-tandaColor text-[36px] font-medium font-['Roboto'] max-md:text-[28px] ">
           {question.question}
         </h2>
         <ul>

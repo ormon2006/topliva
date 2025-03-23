@@ -4,3 +4,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.swiper-slide {
+    height: auto !important;
+  }
+  
+  .swiper-wrapper {
+    align-items: stretch;
+  }

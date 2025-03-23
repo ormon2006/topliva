@@ -5,7 +5,7 @@ import { Typography } from "@mui/material";
 export const StrongSection: React.FC<ResultChartProps> = ({ results }) => {
   return (
     <div>
-      <div className="relative ">
+      <div className="relative container ">
         <Typography
           variant="h2"
           className="my-[20px] text-[2.2rem] font-semibold font-[Roboto] text-center"
