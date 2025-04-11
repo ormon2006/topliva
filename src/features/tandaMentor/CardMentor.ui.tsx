@@ -1,45 +1,58 @@
-import { FC, useRef } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { A11y, Autoplay } from "swiper/modules";
+import { FC } from "react";
 import { mentors } from "./model/data/mentorData";
 import MentorCard from "./MentorCard.ui";
-
-import "swiper/css";
-import "swiper/css/navigation";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from "~app/components/ui/carousel";
 
 export const CardMentor: FC = () => {
-  const swiperRef = useRef<any>(null);
-
   return (
     <section className="mb-6">
-      <div className="container mx-auto">
+      <div className="container mx-auto px-4">
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold mb-4">Наши Менторы</h2>
+          <h2 className="text-3xl font-bold mb-4 text-[#2C2C2C]">
+            Наши Менторы
+          </h2>
         </div>
 
-        <Swiper
-          onSwiper={(swiper) => {
-            swiperRef.current = swiper;
+        <Carousel
+          opts={{
+            align: "start",
+            loop: true,
           }}
-          modules={[A11y]}
-          spaceBetween={10} // Увеличьте пространство между слайдами
-          slidesPerView={3}
-          autoplay={{ delay: 3000, disableOnInteraction: false }}
-          breakpoints={{
-            0: { slidesPerView: 1, spaceBetween: 10 },
-            768: { slidesPerView: 2, spaceBetween: 20 },
-            1024: { slidesPerView: 3, spaceBetween: 30 },
-          }}
-          className="pb-12"
+          className="w-full pb-12 relative max-[640px]:max-w-[500px] max-[640px]:mx-auto   max-[530px]:max-w-[400px] max-[430px]:max-w-[300px]"
         >
-          {mentors.map((mentor, index) => (
-            <SwiperSlide key={index}>
-              <div className="py-4 max-[640px]:w-[300px]">
-                <MentorCard mentor={mentor} />
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+          <CarouselContent className="-ml-4">
+            {mentors.map((mentor, index) => (
+              <CarouselItem
+                key={index}
+                className="pl-4 basis-full md:basis-1/2 lg:basis-1/3"
+              >
+                <div className="py-4 h-full">
+                  <div className="mx-auto max-w-[400px] md:max-w-none h-full flex flex-col">
+                    <MentorCard mentor={mentor} />
+                  </div>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+
+          {/* Кнопки навигации */}
+          <div className="hidden sm:block">
+            <CarouselPrevious
+              className="absolute top-1/2 -translate-y-1/2 left-4"
+              variant="ghost"
+            />
+            <CarouselNext
+              className="absolute top-1/2 -translate-y-1/2 right-4"
+              variant="ghost"
+            />
+          </div>
+        </Carousel>
       </div>
     </section>
   );

@@ -1,7 +1,12 @@
-import { TextField, Button } from "@mui/material";
+"use client";
+
+import { Button } from "~app/components/ui/button";
+import { Input } from "~app/components/ui/input";
+import { Label } from "~app/components/ui/label";
 import { MuiTelInput } from "mui-tel-input";
 import { useAuthLogic } from "../model/hooks/useAuthLogic";
 import { getCookie } from "typescript-cookie";
+import { Reveal } from "~shared/lib/framer";
 export const AuthForm = () => {
   const {
     name,
@@ -15,87 +20,90 @@ export const AuthForm = () => {
     handleBlur,
   } = useAuthLogic();
 
-  const isAuth = !!getCookie('access')
+  const isAuth = !!getCookie("access");
+
   return (
-    <div className="p-5 pb-20">
-      <div className="bg-white rounded-[32px] shadow-2xl max-w-[568px] p-12 max-[475px]:p-5  mx-auto mt-24 md:mt-12 max-sm:mt-10 max-xs:mt-2">
-        <form onSubmit={handleSubmit} className="text-center">
-          <h1 className="text-[28px] leading-[32px] font-semibold  font-[Graphik,sans-serif] text-[#4f4f4f]">
-            Подобрали подходящие <br /> для вас профессии
-          </h1>
-          <p className="text-[#666666] text-base my-[12px] font-medium font-[Graphik,sans-serif]">
-            Заполните форму, чтобы узнать результаты
-          </p>
-          <TextField
-            style={{
-              margin: "8px 0",
-              width: "100%",
-              outline: "#000",
-              borderRadius: "30px",
-            }}
-            variant="outlined"
-            label="Ваше Имя"
-            name="name"
-            value={name}
-            onChange={handleChange}
-            onBlur={() => handleBlur("name")}
-            error={nameError}
-            helperText={nameError && "Имя должно быть не менее 3 символов"}
-            className="mb-2 font-[Graphik,sans-serif] font-bold"
-            sx={{
-              "& .MuiOutlinedInput-root": {
-                fontFamily: "Roboto",
+    <Reveal from="bottom" delay={0.3}>
+      <div className="p-5 pb-20">
+        <div className="bg-[#F7F7F7] rounded-[32px] shadow-2xl max-w-[568px] p-12 max-[475px]:p-5 mx-auto mt-24 md:mt-12 max-sm:mt-10 max-xs:mt-2">
+          <form onSubmit={handleSubmit} className="text-center space-y-4">
+            <h3 className="text-[28px] text-[#2C2C2C] leading-[32px] font-semibold">
+              Подобрали подходящие <br /> для вас профессии
+            </h3>
+            <p className=" text-[#888888] text-base my-[12px] font-medium">
+              Заполните форму, чтобы узнать результаты
+            </p>
 
-                borderRadius: "4px",
-                "& fieldset": { borderColor: "#000" },
-                "&:hover fieldset": {
-                  borderColor: "#005B50",
-                  fontWeight: "700",
-                },
-                "&.Mui-focused fieldset": { borderColor: "#005B50" },
-              },
-              "& .MuiFormLabel-root.Mui-focused": { color: "#000" },
-            }}
-          />
+            <div className="space-y-2 text-left">
+              <Label htmlFor="name" className="text-[#000]">
+                Ваше Имя
+              </Label>
+              <Input
+                id="name"
+                name="name"
+                value={name}
+                onChange={handleChange}
+                onBlur={() => handleBlur("name")}
+                className={`w-full ${nameError ? "border-red" : ""}`}
+                placeholder="Введите ваше имя"
+              />
+              {nameError && (
+                <p className="text-red text-sm">
+                  Имя должно быть не менее 3 символов
+                </p>
+              )}
+            </div>
 
-          <MuiTelInput
-            style={{
-              margin: "8px 0",
-              width: "100%",
-              outline: "#000",
-              borderRadius: "30px",
-            }}
-            value={phone}
-            onChange={handlePhoneChange}
-            onBlur={() => handleBlur("phone")}
-            defaultCountry="KG"
-            placeholder="Введите номер телефона"
-            error={phoneError}
-            helperText={phoneError && "Неверный формат номера"}
-            className="mb-2"
-            sx={{
-              "& .MuiOutlinedInput-root": {
-                borderRadius: "4px",
-                fontFamily: "Roboto",
+            <div className="space-y-2 text-left">
+              <Label htmlFor="phone" className="text-[#000]">
+                Номер телефона
+              </Label>
+              <MuiTelInput
+                value={phone}
+                onChange={handlePhoneChange}
+                defaultCountry="KG"
+                onBlur={() => handleBlur("phone")}
+                placeholder="Введите номер телефона"
+                error={phoneError}
+                helperText={phoneError && "Неверный формат номера"}
+                className="w-full"
+                inputProps={{
+                  className: "h-5",
+                }}
+                sx={{
+                  color: " #7874a9",
 
-                "& fieldset": { borderColor: "#000" },
-                "&:hover fieldset": { borderColor: "#005B50" },
-                "&.Mui-focused fieldset": { borderColor: "#005B50" },
-              },
-              "& .MuiFormLabel-root.Mui-focused": { color: "#000" },
-            }}
-          />
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "6px",
 
-          <Button
-            type="submit"
-            variant="contained"
-            disabled={!isFormValid}
-            className="mt-8 py-3 px-12 bg-[#005B50] rounded-2xl hover:bg-[#004940] text-sm md:text-base normal-case"
-          >
-            Перейти к результатам
-          </Button>
-        </form>
+                    height: "35px",
+
+                    "& fieldset": {
+                      borderColor: phoneError ? "#ef4444" : "#e2e8f0",
+                      color: " #7874a9",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "#e2e8f0",
+                      color: " #7874a9",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#000",
+                    },
+                  },
+                }}
+              />
+            </div>
+
+            <Button
+              type="submit"
+              disabled={!isFormValid}
+              className="mt-8 py-3 px-12  text-white   text-sm md:text-base"
+            >
+              Перейти к результатам
+            </Button>
+          </form>
+        </div>
       </div>
-    </div>
+    </Reveal>
   );
 };

@@ -11,11 +11,11 @@ export const SalaryInfoCard: FC<SalaryInfoCardProps> = ({ profession }) => {
   return (
     <div className="text-[#4f4f4f] border border-[#ccc] relative rounded-[26px] p-4 bg-[#f9f9f9] shadow-md hover:transform hover:scale-105 transition-all duration-300 h-full min-h-[360px] flex flex-col justify-between">
       <div>
-        <h3 className="text-xl md:text-2xl font-bold mb-3 font-[Roboto]">
+        <h3 className="text-xl md:text-2xl font-medium font-[Roboto] mb-3 ">
           {profession.title}
         </h3>
 
-        <div className="flex items-center gap-2 mb-3 font-[Roboto]">
+        <div className="flex items-center gap-2 mb-3 ">
           <img src={som} alt="Сом" className="w-6 md:w-8" />
           <div>
             <p className="text-sm md:text-base font-bold">
@@ -25,7 +25,7 @@ export const SalaryInfoCard: FC<SalaryInfoCardProps> = ({ profession }) => {
           </div>
         </div>
 
-        <div className="flex items-center gap-2 mb-3 font-[Roboto]">
+        <div className="flex items-center gap-2 mb-3 ">
           <img src={som} alt="Сом" className="w-6 md:w-8" />
           <div>
             <p className="text-sm md:text-base font-bold">
@@ -37,7 +37,7 @@ export const SalaryInfoCard: FC<SalaryInfoCardProps> = ({ profession }) => {
           </div>
         </div>
 
-        <p className="text-[#7b7777] font-semibold text-sm md:text-base mb-4 font-[Roboto] line-clamp-4">
+        <p className="text-black font-normal text-sm md:text-base mb-4 font-[Roboto] line-clamp-4">
           {profession.description}
         </p>
       </div>

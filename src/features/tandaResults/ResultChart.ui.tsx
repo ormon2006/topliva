@@ -1,8 +1,9 @@
-import { useEffect, useState, FC } from "react";
+import { useEffect, useState, FC, useMemo, useCallback } from "react";
 import ReactECharts from "echarts-for-react";
-import { Typography, LinearProgress, Box } from "@mui/material";
+import { LinearProgress, Box, useMediaQuery, Theme } from "@mui/material";
 import { motion } from "framer-motion";
-
+import { cn } from "~app/lib/utils"; // Предполагается наличие утилит для классов
+import { Reveal } from "~shared/lib/framer";
 export interface ResultChartProps {
   results: {
     [key: string]: number;
@@ -14,226 +15,175 @@ interface ChartData {
   value: number;
 }
 
+const CHART_COLORS = {
+  primary: "#000",
+  progress: "#000",
+  background: "#000",
+  text: "#000",
+};
+
+const SKILLS_MAP = [
+  "Инициативность и самостоятельность",
+  "Эмпатия и понимание пользователей",
+  "Аналитическое мышление и работа с данными",
+  "Креативность и визуальное мышление",
+  "Планирование и организация",
+  "Технические навыки и программирование",
+];
+
 export const ResultChart: FC<ResultChartProps> = ({ results }) => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
-
-  useEffect(() => {
-    let resizeTimeout: number;
-
-    const handleResize = () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = window.setTimeout(() => {
-        setIsMobile(window.innerWidth < 1024);
-      }, 200);
-    };
-
-    window.addEventListener("resize", handleResize);
-    handleResize();
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      clearTimeout(resizeTimeout);
-    };
-  }, []);
-
-  const rawData: ChartData[] = [
-    {
-      name: "Инициативность и\nсамостоятельность",
-      value: results["Инициативность и самостоятельность"] || 0,
-    },
-    {
-      name: "Эмпатия и  понимание\n пользователей",
-      value: results["Эмпатия и понимание пользователей"] || 0,
-    },
-    {
-      name: "Аналитическое мышление \nи работа с данными",
-      value: results["Аналитическое мышление и работа с данными"] || 0,
-    },
-    {
-      name: "Креативность и \nвизуальное мышление",
-      value: results["Креативность и визуальное мышление"] || 0,
-    },
-    {
-      name: "Планирование \n и организация",
-      value: results["Планирование и организация"] || 0,
-    },
-    {
-      name: "Технические навыки \n и программирование",
-      value: results["Технические навыки и программирование"] || 0,
-    },
-  ].filter((item): item is ChartData => item.value > 0);
-
-  const totalValue = rawData.reduce((acc, item) => acc + item.value, 0);
-
-  const data = rawData
-    .map((item) => ({
-      name: item.name,
-      value: totalValue ? Math.round((item.value / totalValue) * 100) : 0,
-    }))
-    .sort((a, b) => b.value - a.value);
-
-  if (data.every((item) => item.value === 0)) {
-    return <div>Нет данных для отображения результатов</div>;
-  }
-
-  const MobileList = () => (
-    <Box
-      sx={{
-        width: "100%",
-        mt: 3,
-        display: "flex",
-        flexDirection: "column",
-        gap: 2,
-      }}
-    >
-      {data.map((skill, index) => (
-        <motion.div
-          key={index}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: index * 0.1 }}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "15px",
-            padding: "12px 16px",
-            borderRadius: "12px",
-            backgroundColor: "#1E1E1E",
-          }}
-        >
-          <Box
-            sx={{
-              textAlign: "center",
-              bgcolor: "#005B50",
-              color: "rgb(255, 255, 255)",
-              padding: "8px 14px",
-              borderRadius: "32px",
-              fontWeight: 600,
-              fontSize: "16px",
-              minWidth:'108px',
-
-            }}
-          >
-            {skill.value}%
-          </Box>
-
-          <Box sx={{ flex: 1 }}>
-            <Typography
-              variant="body1"
-              sx={{
-                fontSize: "16px",
-                fontWeight: 500,
-                mb: "4px",
-                color: "#E0E0E0",
-              }}
-            >
-              {skill.name}
-            </Typography>
-            <LinearProgress
-              variant="determinate"
-              value={skill.value}
-              sx={{
-                height: "8px",
-                borderRadius: "4px",
-                "& .MuiLinearProgress-bar": {
-                  backgroundColor: "#00cc44",
-                },
-              }}
-            />
-          </Box>
-        </motion.div>
-      ))}
-    </Box>
+  const isMobile = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down("lg")
   );
-  const option = {
-    tooltip: {
-      trigger: "item" as const,
-      formatter: (params: any) => `${params.name}: ${params.value}%`,
-      backgroundColor: "rgba(50, 50, 50, 0.8)",
-      textStyle: { color: "#fff" },
-    },
-    radar: {
-      indicator: data.map((item) => ({
-        name: `${item.name} (${item.value}%)`,
-        max: 45,
-      })),
-      radius: isMobile ? "60%" : "75%",
-      splitNumber: 1,
-      shape: "polygon" as const,
-      splitArea: {
-        areaStyle: {
-          color: ["#fff"],
-        },
-      },
-      axisLine: {
-        lineStyle: {
-          color: "#4e73a1",
-          width: 1,
-        },
-      },
-      splitLine: {
-        lineStyle: {
-          color: "#4e73a1",
-          width: 1,
-        },
-      },
-      axisName: {
-        color: "#333",
-        fontSize: 18,
-        fontFamily: "Roboto, sans-serif",
-        backgroundColor: "rgba(255, 255, 255, 0.6)",
-        borderRadius: 3,
-        padding: [2, 2] as [number, number],
-        fontWeight: 400 as const,
-      },
-    },
-    series: [
-      {
-        name: "Результаты",
-        type: "radar" as const,
-        data: [
-          {
-            value: data.map((item) => item.value),
-            name: "Ваши результаты",
-            areaStyle: {
-              color: "#00cc44",
-            },
-            lineStyle: {
-              color: "#00cc44",
-              width: 2,
-            },
-            itemStyle: {
-              color: "#00cc44",
-              borderWidth: 0,
-            },
-          },
-        ],
-      },
-    ],
-  };
+  const [maxValue, setMaxValue] = useState(0);
 
-  return (
-    <div className="  mx-auto px-4">
-      <div className=" mx-auto max-w-[1000px] bg-white py-5 md:py-8 px-4 md:px-8 rounded-3xl shadow-sm">
-        <Typography
-          variant="h2"
-          className="text-2xl md:text-3xl font-bold mb-4"
+  // Мемоизация данных
+  const { data, isEmpty } = useMemo(() => {
+    const rawData: ChartData[] = SKILLS_MAP.map((name) => ({
+      name: name.replace(/ и /g, " и\n"),
+      value: results[name] || 0,
+    })).filter((item) => item.value > 0);
+
+    const totalValue = rawData.reduce((acc, item) => acc + item.value, 0);
+
+    const calculatedData = rawData
+      .map((item) => ({
+        ...item,
+        value: totalValue ? Math.round((item.value / totalValue) * 100) : 0,
+      }))
+      .sort((a, b) => b.value - a.value);
+
+    setMaxValue(Math.max(...calculatedData.map((item) => item.value), 0));
+
+    return {
+      data: calculatedData,
+      isEmpty: calculatedData.every((item) => item.value === 0),
+    };
+  }, [results]);
+
+  const chartOption = useMemo(
+    () => ({
+      tooltip: {
+        trigger: "item" as const,
+        formatter: (params: any) => `${params.name}: ${params.value}%`,
+        backgroundColor: "#000",
+        textStyle: { color: "#fff" },
+      },
+      radar: {
+        indicator: data.map((item) => ({
+          name: `${item.name} (${item.value}%)`,
+          max: Math.ceil(maxValue * 1.2),
+        })),
+        radius: isMobile ? "60%" : "75%",
+        shape: "polygon" as const,
+        axisLine: { lineStyle: { color: "#000", width: 1 } },
+        splitLine: { lineStyle: { color: "#000", width: 1 } },
+        axisName: {
+          color: "#000",
+          fontSize: 14,
+          fontFamily: "Roboto, sans-serif",
+          backgroundColor: "rgba(255, 255, 255, 0.6)",
+          borderRadius: 3,
+          padding: [2, 2] as [number, number],
+        },
+      },
+      series: [
+        {
+          type: "radar" as const,
+          data: [
+            {
+              value: data.map((item) => item.value),
+              name: "Ваши результаты",
+              areaStyle: { color: CHART_COLORS.progress },
+              lineStyle: { color: CHART_COLORS.progress, width: 2 },
+              itemStyle: { color: CHART_COLORS.progress },
+            },
+          ],
+        },
+      ],
+    }),
+    [data, maxValue, isMobile]
+  );
+
+  const MobileSkillItem = useCallback(
+    ({ skill, index }: { skill: ChartData; index: number }) => (
+      <motion.div
+        key={skill.name}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, delay: index * 0.1 }}
+        className={cn(
+          "flex items-center gap-4 p-3 rounded-xl",
+          "bg-[#E0E0E0] hover:bg-[#2A2A2A] transition-colors"
+        )}
+      >
+        <Box
+          className={cn(
+            "bg-[black] text-white px-3.5 py-2",
+            "rounded-full font-semibold min-w-[108px] text-center"
+          )}
         >
-          Ваши результаты:
-        </Typography>
+          {skill.value}%
+        </Box>
 
-        {isMobile ? (
-          <MobileList />
-        ) : (
-          <ReactECharts
-            option={option}
-            style={{
-              height: "500px",
-              width: "100%",
-              maxWidth: "900px",
-              margin: "0 auto",
+        <Box className="flex-1">
+          <p className="text-[#2C2C2C] font-medium mb-1 text-base">
+            {skill.name}
+          </p>
+          <LinearProgress
+            variant="determinate"
+            value={skill.value}
+            sx={{
+              height: 8,
+              borderRadius: 4,
+              background: "white",
+              ".MuiLinearProgress-bar": {
+                backgroundColor: CHART_COLORS.progress,
+              },
             }}
           />
+        </Box>
+      </motion.div>
+    ),
+    []
+  );
+
+  if (isEmpty) {
+    return (
+      <div className="text-center p-8 text-gray-500">
+        Недостаточно данных для отображения результатов
+      </div>
+    );
+  }
+
+  return (
+    <div className="mx-auto px-4 max-w-[1000px]">
+      <div className="bg-[#F7F7F7] py-5 md:py-8 px-4 md:px-8 rounded-3xl shadow-lg">
+        <Reveal from="left" delay={0.3}>
+          <h2 className="text-[#2C2C2C] text-2xl md:text-3xl font-bold mb-4 md:mb-6">
+            Ваши результаты:
+          </h2>
+        </Reveal>
+
+        {isMobile ? (
+          <div className="flex flex-col gap-3 mt-3">
+            {data.map((skill, index) => (
+              <MobileSkillItem key={skill.name} skill={skill} index={index} />
+            ))}
+          </div>
+        ) : (
+          <Reveal from="bottom" delay={0.3}>
+            <ReactECharts
+              option={chartOption}
+              style={{
+                height: "500px",
+                width: "100%",
+                minHeight: "400px",
+                margin: "0 auto",
+              }}
+              opts={{ renderer: "svg" }}
+            />
+          </Reveal>
         )}
       </div>
     </div>

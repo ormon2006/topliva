@@ -41,7 +41,10 @@ const MentorCard: FC<MentorCardProps> = ({ mentor }) => (
       <h4 className="font-semibold mb-2">Пройдете темы:</h4>
       <ul className="list-disc pl-6 space-y-1 text-[#7b7777]">
         {mentor.topics.map((topic, index) => (
-          <li key={index} className="text-[16px] font-semibold py-[5px] pl-[5px]">
+          <li
+            key={index}
+            className="text-[16px] font-semibold py-[5px] pl-[5px]"
+          >
             {topic}
           </li>
         ))}

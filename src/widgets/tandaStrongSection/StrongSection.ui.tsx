@@ -8,7 +8,7 @@ export const StrongSection: React.FC<ResultChartProps> = ({ results }) => {
       <div className="relative container ">
         <Typography
           variant="h2"
-          className="my-[20px] text-[2.2rem] font-semibold font-[Roboto] text-center"
+          className="my-[20px] text-[#2C2C2C] text-[2.2rem] font-semibold font-[Roboto] text-center"
         >
           Подходящие профессии
         </Typography>

@@ -8,6 +8,7 @@ import star from "../../../public/tanda/StrongSides/icon-star.png";
 import { skillToProfessions } from "./model/StrongSideData";
 import { ResultChartProps } from "~features/tandaResults";
 import { Typography, Box } from "@mui/material";
+import { Reveal } from "~shared/lib/framer";
 export const StrongSidesCard: FC<ResultChartProps> = ({ results }) => {
   const { topSkills } = useStrongSides(results);
 
@@ -41,7 +42,7 @@ export const StrongSidesCard: FC<ResultChartProps> = ({ results }) => {
               </Box>
               <Typography
                 variant="h3"
-                className="text-2xl font-semibold mt-[15px] mb-[20px] font-[Roboto]"
+                className="text-2xl  font-semibold mt-[15px] mb-[20px] font-[Roboto]"
               >
                 {item.skill}
               </Typography>
@@ -61,28 +62,28 @@ export const StrongSidesCard: FC<ResultChartProps> = ({ results }) => {
                 />
               )}
             </Box>
-            <Box className="pt-[56px] pr-[56px] pb-[18px] pl-[56px] bg-white rounded-xl shadow-lg">
+            <Box className="pt-[56px] pr-[56px] pb-[18px] pl-[56px] bg-[#F7F7F7] rounded-xl ">
               <Typography
                 variant="h4"
-                className="text-2xl font-semibold mb-2 font-[Roboto]"
+                className="text-2xl text-[#2C2C2C] font-semibold mb-2 "
               >
                 Почему подходит
               </Typography>
               <Typography
                 variant="subtitle2"
-                className="text-lg mb-5 font-[Graphik,sans-serif]"
+                className="text-lg mb-5 text-[#6E6E6E]  "
               >
                 {data.reason || "Информация недоступна"}
               </Typography>
               <Typography
                 variant="h4"
-                className="text-2xl font-semibold mb-2 font-[Roboto]"
+                className="text-2xl font-semibold mb-2 text-[#2C2C2C]"
               >
                 Суть профессии
               </Typography>
               <ul className="space-y-2">
                 {data?.professions?.map((_, idx) => (
-                  <li key={idx} className="text-lg font-[Graphik,sans-serif]">
+                  <li key={idx} className="text-lg font-medium text-[#6E6E6E] ">
                     {data.description || "Описание недоступно"}
                   </li>
                 ))}

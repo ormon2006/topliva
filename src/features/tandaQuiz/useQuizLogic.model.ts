@@ -6,17 +6,17 @@ import { SkillScore } from "~entities/tandaQuestion";
 export const useQuizLogic = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
   const [selectedOption, setSelectedOption] = useState<string>("");
-    const [results, setResults] = useState<SkillScore>({
-      "Инициативность и самостоятельность": 0,
-      "Адаптивность и гибкость": 0,
-      "Командная работа и координация": 0,
-      "Эмпатия и понимание пользователей": 0,
-      "Аналитическое мышление и работа с данными": 0,
-      "Креативность и визуальное мышление": 0,
-      "Планирование и организация": 0,
-      "Технические навыки и программирование": 0,
-      "Внимание к деталям": 0,
-    });
+  const [results, setResults] = useState<SkillScore>({
+    "Инициативность и самостоятельность": 0,
+    "Адаптивность и гибкость": 0,
+    "Командная работа и координация": 0,
+    "Эмпатия и понимание пользователей": 0,
+    "Аналитическое мышление и работа с данными": 0,
+    "Креативность и визуальное мышление": 0,
+    "Планирование и организация": 0,
+    "Технические навыки и программирование": 0,
+    "Внимание к деталям": 0,
+  });
 
   const [isTestFinished, setIsTestFinished] = useState<boolean>(false);
   const navigate = useNavigate();

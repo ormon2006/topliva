@@ -1,55 +1,57 @@
-import { FC, useRef, useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import {
-  Navigation,
-  A11y,
-  Autoplay,
-  Pagination,
-  Keyboard,
-} from "swiper/modules";
-import { Button } from "@mui/material";
+import { FC } from "react";
 import { professionData } from "./model/data/salaryInfoData";
 import { SalaryInfoCard } from "./SalaryInfoCard.ui";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from "~app/components/ui/carousel";
+import { Button } from "~app/components/ui/button";
 
 export const SalaryInfo: FC = () => {
-  const swiperRef = useRef<any>(null);
-
-
   return (
-    <section className=" ">
-      <div className="container mx-auto">
-        <h2 className="text-3xl font-bold text-center mb-8">
+    <section className="py-8">
+      <div className="container mx-auto px-4">
+        <h2 className="text-3xl text-[#2C2C2C] font-bold text-center mb-8">
           Каталог направлений
         </h2>
 
-        <Swiper
-          onSwiper={(swiper) => {
-            swiperRef.current = swiper;
+        <Carousel
+          opts={{
+            align: "start",
+            loop: true,
           }}
-          modules={[Navigation, A11y, Autoplay, Pagination, Keyboard]}
-          spaceBetween={5}
-          loop
-          autoplay={{ delay: 3000, disableOnInteraction: false }}
-          keyboard={{ enabled: true }}
-          pagination={{ clickable: true }}
-          breakpoints={{
-            0: { slidesPerView: 1 },
-            768: { slidesPerView: 2 },
-            1024: { slidesPerView: 3 },
-          }}
-          className="pb-12"
+          className="w-full pb-12 relative max-[640px]:max-w-[400px] max-[640px]:mx-auto max-[430px]:max-w-[300px] max-[380px]:max-w-[250px]"
         >
-          {professionData.map((profession, index) => (
-            <SwiperSlide key={index}>
-              <div className="px-2 py-4">
-                <SalaryInfoCard profession={profession} />
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+          <CarouselContent className="-ml-4">
+            {professionData.map((profession, index) => (
+              <CarouselItem
+                key={index}
+                className="pl-4 basis-full md:basis-1/2 lg:basis-1/3"
+              >
+                <div className="py-4 h-full">
+                  <SalaryInfoCard profession={profession} />
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+
+          {/* Навигационные кнопки */}
+          <div className="hidden md:block">
+            <CarouselPrevious
+              className="absolute top-1/2 -translate-y-1/2 left-4"
+              variant="ghost"
+              size="lg"
+            />
+            <CarouselNext
+              className="absolute top-1/2 -translate-y-1/2 right-4"
+              variant="ghost"
+              size="lg"
+            />
+          </div>
+        </Carousel>
       </div>
     </section>
   );

@@ -27,7 +27,8 @@ export const TandaResult: React.FC = () => {
     <div>
       <ResultChart results={results} />
       <StrongSection results={results} />
-      {/* <CardMentor /> */}
+      <SalaryInfo />
+      <CardMentor/>
     </div>
   );
 };
