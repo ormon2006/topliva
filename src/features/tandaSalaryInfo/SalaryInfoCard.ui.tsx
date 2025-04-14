@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Button } from "@mui/material";
+import { Button } from "~app/components/ui/button";
 import { Profession } from "./model/types/salaryInfoTypes";
 import som from "../../../public/tanda/SalaryInfo/som.png";
 
@@ -44,17 +44,7 @@ export const SalaryInfoCard: FC<SalaryInfoCardProps> = ({ profession }) => {
 
       <div className="w-full mt-auto">
         <Button
-          variant="contained"
-          fullWidth
-          sx={{
-            background: "#005b50",
-            fontSize: { xs: "0.875rem", md: "1rem" },
-            py: 1,
-            "&:hover": {
-              backgroundColor: "#00796b",
-              transform: "scale(1.05)",
-            },
-          }}
+        className="w-full"
           onClick={() => window.open(profession.link, "_blank")}
         >
           Читать далее

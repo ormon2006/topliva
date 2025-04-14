@@ -62,7 +62,7 @@ export const StrongSidesCard: FC<ResultChartProps> = ({ results }) => {
                 />
               )}
             </Box>
-            <Box className="pt-[56px] pr-[56px] pb-[18px] pl-[56px] bg-[#F7F7F7] rounded-xl ">
+            <Box className="pt-[56px] pr-[56px] pb-[18px] pl-[56px] shadow-sm bg-[#F5F5F5] rounded-xl ">
               <Typography
                 variant="h4"
                 className="text-2xl text-[#2C2C2C] font-semibold mb-2 "
