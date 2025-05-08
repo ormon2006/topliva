@@ -8,12 +8,11 @@ import WidgetsIcon from "@mui/icons-material/Widgets";
 
 export function Footer() {
   return (
-    <Box component="footer" className="bg-tundora text-white py-6 md:px-40 px-10">
+    <Box component="footer" className="bg-primary text-white py-6 md:px-40 px-10">
       <div className="container mx-auto px-4 pb-7 flex flex-col sm:flex-row items-center justify-around">
         <Link to={pathKeys.home()} className="flex items-center mb-4 sm:mb-0">
-          <SchoolIcon />
           <Typography variant="h6" component="div" className="ml-2 text-center sm:text-left">
-            BilimTrack
+           Logo
           </Typography>
         </Link>
         <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6">
@@ -41,12 +40,7 @@ export function Footer() {
         </div>
       </div>
 
-      <Typography
-        variant="body2"
-        className="text-gray-400 text-center mt-4 text-sm  flex items-center justify-center gap-3"
-      >
-       Developed by OurEra Soft
-      </Typography>
+
     </Box>
   );
 }

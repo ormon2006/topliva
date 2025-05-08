@@ -1,9 +1,9 @@
 import { RouteObject } from 'react-router-dom';
 import { createElement } from 'react';
-import { AboutPage} from './about-page.ui';
+import { DashboardPage} from './about-page.ui';
 import { pathKeys } from '../../shared/lib/react-router';
 
-export const aboutPageRoute: RouteObject = {
+export const DashboardPageRoute: RouteObject = {
   path: pathKeys.about(),
-  element: createElement(AboutPage),
+  element: createElement(DashboardPage),
 };

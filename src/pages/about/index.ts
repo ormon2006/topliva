@@ -1,1 +1,1 @@
-export { aboutPageRoute } from './about-page.route';
+export { DashboardPageRoute } from './about-page.route';

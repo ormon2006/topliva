@@ -1,0 +1,1 @@
+export {BishkekFuelMap} from './BishkekFuelMap.ui'

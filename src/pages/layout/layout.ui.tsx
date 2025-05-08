@@ -1,7 +1,6 @@
-import { Navigate, Outlet } from 'react-router-dom';
-import { Footer } from '~widgets/footer';
-import { Header } from '~widgets/header';
-import { Navigator } from '~widgets/navigator';
+import { Navigate, Outlet } from "react-router-dom";
+import { Footer } from "~widgets/footer";
+import { Header } from "~widgets/header";
 
 export function GenericLayout() {
   return (
@@ -10,8 +9,7 @@ export function GenericLayout() {
       <main className="flex-grow max-w-[1200px] mx-auto">
         <Outlet />
       </main>
-      <Navigator />
-      <Footer />  
+      <Footer />
     </div>
   );
 }
@@ -31,7 +29,7 @@ interface ProtectedRouteProps {
 
 export function ProtectedRoute({
   isAuthenticated,
-  redirectPath = '/auth',
+  redirectPath = "/auth",
 }: ProtectedRouteProps) {
   return isAuthenticated ? <Outlet /> : <Navigate to={redirectPath} replace />;
 }

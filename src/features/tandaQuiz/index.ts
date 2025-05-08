@@ -1,1 +1,0 @@
-export {useQuizLogic} from './useQuizLogic.model'
