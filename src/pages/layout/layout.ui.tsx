@@ -4,9 +4,9 @@ import { Header } from "~widgets/header";
 
 export function GenericLayout() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-tandaTestBg">
       <Header />
-      <main className="flex-grow max-w-[1200px] mx-auto">
+      <main className="flex-grow  max-w-[1200px] mx-auto">
         <Outlet />
       </main>
       <Footer />

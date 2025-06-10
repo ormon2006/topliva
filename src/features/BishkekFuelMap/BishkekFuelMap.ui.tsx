@@ -152,7 +152,8 @@ export const BishkekFuelMap = () => {
         height: "500px", 
         borderRadius: 3, 
         overflow: "hidden",
-        position: 'relative'
+        position: 'relative',й
+        maxWidth: "800px", mx: "auto", my: 4 
       }}
     >
       {loading ? (

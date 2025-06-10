@@ -59,22 +59,38 @@ export const FuelCalculator = () => {
   return (
     <Paper
       elevation={3}
-      sx={{ p: 3, borderRadius: 3, background: theme.palette.background.paper }}
+      sx={{ p: 3, borderRadius: 3, background: theme.palette.background.paper, maxWidth: "650px", mx: "auto", my: 4  }}
     >
       <Typography
         variant="h6"
         sx={{ mb: 2, display: "flex", alignItems: "center", gap: 1 }}
       >
-        <Calculate color="primary" /> Умный калькулятор заправок
+        <Calculate color="dark  " /> 
       </Typography>
 
-      <Grid container spacing={2}>
+      <Grid container spacing={1}>
         <Grid item xs={12} md={4}>
           <TextField
             label="Объем бака (л)"
             type="number"
             fullWidth
             value={tankVolume}
+                     sx={{
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": {
+                  borderColor: '#121212', 
+                },
+                "&:hover fieldset": {
+                  borderColor: "#121212", 
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: "#121212", 
+                },
+              },
+              "& label.Mui-focused": {
+                color: "#121212", // цвет label при фокусе
+              },
+            }}
             onChange={(e) => setTankVolume(parseFloat(e.target.value))}
             InputProps={{
               endAdornment: <InputAdornment position="end">л</InputAdornment>,
@@ -97,6 +113,22 @@ export const FuelCalculator = () => {
             InputProps={{
               endAdornment: <InputAdornment position="end">%</InputAdornment>,
             }}
+                                 sx={{
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": {
+                  borderColor: '#121212', 
+                },
+                "&:hover fieldset": {
+                  borderColor: "#121212", 
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: "#121212", 
+                },
+              },
+              "& label.Mui-focused": {
+                color: "#121212", // цвет label при фокусе
+              },
+            }}
           />
         </Grid>
 
@@ -107,6 +139,22 @@ export const FuelCalculator = () => {
             fullWidth
             value={fuelPrice}
             onChange={(e) => setFuelPrice(parseFloat(e.target.value))}
+                                 sx={{
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": {
+                  borderColor: '#121212', 
+                },
+                "&:hover fieldset": {
+                  borderColor: "#121212", 
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: "#121212", 
+                },
+              },
+              "& label.Mui-focused": {
+                color: "#121212", // цвет label при фокусе
+              },
+            }}
             InputProps={{
               endAdornment: <InputAdornment position="end">₽/л</InputAdornment>,
               startAdornment: (
@@ -121,6 +169,7 @@ export const FuelCalculator = () => {
         <Grid item xs={12}>
           <Button
             variant="contained"
+            color="dark"
             fullWidth
             onClick={calculate}
             startIcon={<Calculate />}

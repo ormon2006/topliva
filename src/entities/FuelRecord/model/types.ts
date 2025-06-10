@@ -1,4 +1,3 @@
-// entities/FuelRecord/model/types.ts
 export interface FuelRecord {
   id: string;
   date: Date;
@@ -10,7 +9,6 @@ export interface FuelRecord {
   vehicleId: string;
 }
 
-// Расчет стоимости заправки
 export const calculateTotalCost = (
   liters: number,
   pricePerLiter: number
@@ -18,7 +16,6 @@ export const calculateTotalCost = (
   return parseFloat((liters * pricePerLiter).toFixed(2));
 };
 
-// Расчет расхода топлива (л/100км)
 export const calculateFuelConsumption = (
   currentOdometer: number,
   prevOdometer: number,

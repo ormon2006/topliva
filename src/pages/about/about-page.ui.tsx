@@ -1,6 +1,5 @@
 import {
   Box,
-  Grid,
   Typography,
   Paper,
   Tabs,
@@ -43,13 +42,9 @@ export const DashboardPage = () => {
     <Box
       sx={{
         p: { xs: 2, md: 4 },
-
         mx: "auto",
         minHeight: "100vh",
-        background:
-          theme.palette.mode === "light"
-            ? theme.palette.grey[50]
-            : theme.palette.background.default,
+        maxWidth: 1200,
       }}
     >
       <Typography
@@ -59,10 +54,7 @@ export const DashboardPage = () => {
         sx={{
           mb: 4,
           fontWeight: 700,
-          color:
-            theme.palette.mode === "light"
-              ? theme.palette.primary.dark
-              : theme.palette.primary.light,
+          color: theme.palette.text.primary,
         }}
       >
         Учет расходов на топливо
@@ -75,49 +67,57 @@ export const DashboardPage = () => {
         scrollButtons="auto"
         sx={{
           mb: 4,
-          "& .MuiTabs-indicator": {
-            height: 4,
-            borderRadius: "4px 4px 0 0",
+          '& .MuiTabs-indicator': {
+            height: 3,
+            backgroundColor: theme.palette.primary.main,
+          },
+          '& .MuiTab-root': {
+            textTransform: 'none',
+            fontSize: '0.875rem',
+            fontWeight: 500,
+            minHeight: 48,
+            color: theme.palette.text.secondary,
+            '&.Mui-selected': {
+              color: theme.palette.primary.main,
+              fontWeight: 600,
+            },
+            '&:hover': {
+              color: theme.palette.primary.main,
+              opacity: 1,
+            },
           },
         }}
       >
         <Tab
           label="Новая заправка"
-          icon={<LocalGasStation />}
+          icon={<LocalGasStation fontSize="small" />}
           iconPosition="start"
-          sx={{ minHeight: 60 }}
         />
         <Tab
           label="Статистика"
-          icon={<Equalizer />}
+          icon={<Equalizer fontSize="small" />}
           iconPosition="start"
-          sx={{ minHeight: 60 }}
         />
         <Tab
           label="Калькулятор"
-          icon={<Calculate />}
+          icon={<Calculate fontSize="small" />}
           iconPosition="start"
-          sx={{ minHeight: 60 }}
         />
         <Tab
           label="АЗС на карте"
-          icon={<Map />}
+          icon={<Map fontSize="small" />}
           iconPosition="start"
-          sx={{ minHeight: 60 }}
         />
       </Tabs>
 
-      <Box sx={{ display: currentTab === 0 ? "block" : "none" }}>
+      <Box sx={{ display: currentTab === 0 ? 'block' : 'none' }}>
         <Paper
-          elevation={3}
+          elevation={0}
           sx={{
             p: 3,
-            borderRadius: 3,
-            background:
-              theme.palette.mode === "light"
-                ? "linear-gradient(145deg, #f5f5f5, #fff)"
-                : "linear-gradient(145deg, #1e1e1e, #2d2d2d)",
+            borderRadius: 2,
             border: `1px solid ${theme.palette.divider}`,
+            bgcolor: 'background.paper',
           }}
         >
           <Typography
@@ -142,17 +142,14 @@ export const DashboardPage = () => {
         </Paper>
       </Box>
 
-      <Box sx={{ display: currentTab === 1 ? "block" : "none", mt: 4 }}>
+      <Box sx={{ display: currentTab === 1 ? 'block' : 'none', mt: 3 }}>
         <Paper
-          elevation={3}
+          elevation={0}
           sx={{
             p: 3,
-            borderRadius: 3,
-            background:
-              theme.palette.mode === "light"
-                ? "linear-gradient(145deg, #f5f5f5, #fff)"
-                : "linear-gradient(145deg, #1e1e1e, #2d2d2d)",
+            borderRadius: 2,
             border: `1px solid ${theme.palette.divider}`,
+            bgcolor: 'background.paper',
           }}
         >
           <Typography
@@ -174,17 +171,14 @@ export const DashboardPage = () => {
         </Paper>
       </Box>
 
-      <Box sx={{ display: currentTab === 2 ? "block" : "none", mt: 4 }}>
+      <Box sx={{ display: currentTab === 2 ? 'block' : 'none', mt: 3 }}>
         <Paper
-          elevation={3}
+          elevation={0}
           sx={{
             p: 3,
-            borderRadius: 3,
-            background:
-              theme.palette.mode === "light"
-                ? "linear-gradient(145deg, #f5f5f5, #fff)"
-                : "linear-gradient(145deg, #1e1e1e, #2d2d2d)",
+            borderRadius: 2,
             border: `1px solid ${theme.palette.divider}`,
+            bgcolor: 'background.paper',
           }}
         >
           <Typography
@@ -206,17 +200,14 @@ export const DashboardPage = () => {
         </Paper>
       </Box>
 
-      <Box sx={{ display: currentTab === 3 ? "block" : "none", mt: 4 }}>
+      <Box sx={{ display: currentTab === 3 ? 'block' : 'none', mt: 3 }}>
         <Paper
-          elevation={3}
+          elevation={0}
           sx={{
             p: 3,
-            borderRadius: 3,
-            background:
-              theme.palette.mode === "light"
-                ? "linear-gradient(145deg, #f5f5f5, #fff)"
-                : "linear-gradient(145deg, #1e1e1e, #2d2d2d)",
+            borderRadius: 2,
             border: `1px solid ${theme.palette.divider}`,
+            bgcolor: 'background.paper',
           }}
         >
           <Typography

@@ -8,6 +8,7 @@ import { QueryClientProvider as TanStackQueryClientProvider } from "@tanstack/re
 import "../index.css";
 import { queryClient } from "~shared/lib/react-query/react-query.lib";
 import { ToastContainer } from "react-toastify";
+import { TooltipProvider } from "@radix-ui/react-tooltip";
 
 const theme = createTheme({
   typography: {
@@ -17,7 +18,7 @@ const theme = createTheme({
 
 function App() {
   return (
-    <>
+    <TooltipProvider>
       <TanStackQueryClientProvider client={queryClient}>
         <StyledEngineProvider injectFirst>
           <ThemeProvider theme={theme}>
@@ -34,7 +35,7 @@ function App() {
           </ThemeProvider>
         </StyledEngineProvider>
       </TanStackQueryClientProvider>
-    </>
+    </TooltipProvider>
   );
 }
 
