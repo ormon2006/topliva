@@ -30,7 +30,6 @@ L.Icon.Default.mergeOptions({
   shadowUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
 });
 
-// Координаты центра Бишкека
 const BISHKEK_CENTER = [42.8746, 74.5698] as [number, number];
 
 // Тип данных АЗС
@@ -152,7 +151,7 @@ export const BishkekFuelMap = () => {
         height: "500px", 
         borderRadius: 3, 
         overflow: "hidden",
-        position: 'relative',й
+        position: 'relative',
         maxWidth: "800px", mx: "auto", my: 4 
       }}
     >

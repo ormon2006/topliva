@@ -7,6 +7,8 @@ import {
 import { GenericLayout, IntroLayout } from "../../pages/layout";
 import { ProtectedRoute } from "~pages/layout/layout.ui";
 import { DashboardPageRoute } from "~pages/about";
+import { AuthPageRoute } from "~pages/auth-page";
+import { RankingPageRoute } from "~pages/ranking";
 
 function BubbleError() {
   const error = useRouteError();
@@ -23,8 +25,9 @@ const router = createBrowserRouter([
         children: [
           {
             element: <GenericLayout />,
-            children: [DashboardPageRoute],
+            children: [DashboardPageRoute, RankingPageRoute],
           },
+          { element: <IntroLayout />, children: [AuthPageRoute] },
         ],
       },
     ],
